@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KQ-105 Radio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="styles.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KQ-105 Solicita Música</title>
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" class="logo"/>
-    <div id="player" class="player-container"></div>
+    <img src="logo.png" alt="KQ-105 Logo" class="logo" />
+    <div id="player-container">
+      <div id="player"></div>
+    </div>
+    <section class="request">
+      <h2>Solicita tu Canción</h2>
+      <form id="songForm">
+        <input type="text" id="songName" placeholder="Artista - Canción" required />
+        <button type="submit">Enviar</button>
+      </form>
+      <p id="responseMsg"></p>
+    </section>
   </div>
-  <script src="player.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
