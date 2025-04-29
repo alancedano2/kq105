@@ -1,27 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KQ-105 Solicita Música</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KQ-105 En Vivo y Solicitudes</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #FFD700, #FFB300);
+      color: #000;
+      text-align: center;
+      padding: 20px;
+    }
+    header img {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+    #player {
+      width: 90%;
+      max-width: 900px;
+      height: 500px;
+      margin: 0 auto 30px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+    }
+    .request-form {
+      margin-top: 30px;
+    }
+    .request-form input {
+      padding: 10px;
+      width: 60%;
+      max-width: 400px;
+      font-size: 1rem;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .request-form button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #000;
+      color: #FFD700;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .request-form button:hover {
+      background: #333;
+    }
+    #message {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      min-height: 1.4em;
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <img src="logo.png" alt="KQ-105 Logo" class="logo" />
-    <div id="player-container">
-      <div id="player"></div>
-    </div>
-    <section class="request">
-      <h2>Solicita tu Canción</h2>
-      <form id="songForm">
-        <input type="text" id="songName" placeholder="Artista - Canción" required />
-        <button type="submit">Enviar</button>
-      </form>
-      <p id="responseMsg"></p>
-    </section>
+  <header>
+    <!-- Logo remoto -->
+    <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png"
+         alt="KQ-105 Logo">
+  </header>
+
+  <!-- Reproductor Clappr -->
+  <div id="player"></div>
+
+  <!-- Formulario de solicitud -->
+  <div class="request-form">
+    <input type="text" id="songRequest" placeholder="Artista - Canción" />
+    <button onclick="submitRequest()">Solicitar Canción</button>
   </div>
-  <script src="script.js"></script>
+  <div id="message"></div>
+
+  <script>
+    // Inicializa Clappr
+    new Clappr.Player({
+      source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
+      parentId: "#player",
+      autoPlay: true,
+      height: "100%",
+      width: "100%",
+      mute: false
+    });
+
+    // Función para enviar la solicitud al backend local
+    async function submitRequest() {
+      const song = document.getElementById('songRequest').value.trim();
+      const msgEl = document.getElementById('message');
+      if (!song) {
+        msgEl.innerText = 'Por favor ingresa Artista - Canción.';
+        return;
+      }
+      try {
+        const res = await fetch('http://localhost:3000/add-to-playlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ song })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msgEl.innerText = data.message;
+        } else {
+          msgEl.innerText = data.message || 'Error al solicitar la canción.';
+        }
+      } catch (e) {
+        console.error(e);
+        msgEl.innerText = 'No se pudo conectar con el servidor.';
+      }
+      document.getElementById('songRequest').value = '';
+    }
+  </script>
 </body>
 </html>
