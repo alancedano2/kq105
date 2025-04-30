@@ -88,31 +88,32 @@
     });
 
     // Función para enviar la solicitud al backend local
-    async function submitRequest() {
-      const song = document.getElementById('songRequest').value.trim();
-      const msgEl = document.getElementById('message');
-      if (!song) {
-        msgEl.innerText = 'Por favor ingresa Artista - Canción.';
-        return;
-      }
-      try {
-        const res = await fetch('https://5372-2607-f00-9-d6de-3953-d50f-8fde-ca14.ngrok-free.app/add-to-playlist', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ song })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          msgEl.innerText = data.message;
-        } else {
-          msgEl.innerText = data.message || 'Error al solicitar la canción.';
-        }
-      } catch (e) {
-        console.error(e);
-        msgEl.innerText = 'No se pudo conectar con el servidor.';
-      }
-      document.getElementById('songRequest').value = '';
+     async function submitRequest() {
+    const song = document.getElementById('songRequest').value.trim();
+    const msgEl = document.getElementById('message');
+    if (!song) {
+      msgEl.innerText = 'Por favor ingresa Artista - Canción.';
+      return;
     }
-  </script>
+
+    // Usa tu URL de ngrok aquí:
+    const SERVER_URL = 'https://c4c4-2607-f00-9-d6de-3953-d50f-8fde-ca14.ngrok-free.app';
+
+    try {
+      const res = await fetch(`${SERVER_URL}/add-to-playlist`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ song })
+      });
+      const data = await res.json();
+      msgEl.innerText = data.message;
+    } catch (e) {
+      console.error(e);
+      msgEl.innerText = '❌ No se pudo conectar con el servidor local.';
+    }
+
+    document.getElementById('songRequest').value = '';
+  }
+</script>
 </body>
 </html>
