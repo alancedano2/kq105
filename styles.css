@@ -50,6 +50,10 @@ body {
 .programacion li {
   margin-bottom: 10px;
 }
+.programacion .live {
+  color: red;
+  font-weight: bold;
+}
 .request {
   background: rgba(255, 255, 255, 0.8);
   padding: 20px;
