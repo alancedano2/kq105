@@ -22,7 +22,7 @@
     <!-- Programación -->
     <section class="programacion">
       <h2>📻 Programación de Hoy</h2>
-      <ul>
+      <ul id="programming-list">
         <li><strong>12:00am - 6:00am:</strong> Videos Musicales Powered by KQ105</li>
         <li><strong>6:00am - 10:00am:</strong> KQ Al Aire con Héctor Ortiz</li>
         <li><strong>10:00am - 3:00pm:</strong> KQOnline con Alex Diaz</li>
@@ -30,6 +30,7 @@
         <li><strong>6:00pm - 7:00pm:</strong> KQ Al Aire con Pedro Villegas</li>
         <li><strong>7:00pm - 12:00am:</strong> Videos Musicales Powered by KQ105</li>
       </ul>
+      <p id="countdown" style="font-weight: bold; color: #ff0000;"></p>
     </section>
 
     <!-- Solicitud -->
@@ -53,6 +54,64 @@
       width: "100%",
       mute: false
     });
+
+    // Función para determinar la programación en vivo
+    function updateLiveSchedule() {
+      const programming = [
+        { start: "00:00", end: "06:00", name: "Videos Musicales Powered by KQ105" },
+        { start: "06:00", end: "10:00", name: "KQ Al Aire con Héctor Ortiz" },
+        { start: "10:00", end: "15:00", name: "KQOnline con Alex Diaz" },
+        { start: "15:00", end: "18:00", name: "La Tendencia de Molusco con Ali, Pamela y Robert" },
+        { start: "18:00", end: "19:00", name: "KQ Al Aire con Pedro Villegas" },
+        { start: "19:00", end: "00:00", name: "Videos Musicales Powered by KQ105" }
+      ];
+
+      const currentTime = new Date();
+      const currentHour = currentTime.getHours();
+      const currentMinute = currentTime.getMinutes();
+      let currentProgram = null;
+      let nextProgram = null;
+      let timeToNextProgram = null;
+
+      programming.forEach((program, index) => {
+        const [startHour, startMinute] = program.start.split(":").map(num => parseInt(num));
+        const [endHour, endMinute] = program.end.split(":").map(num => parseInt(num));
+
+        const startTime = new Date(currentTime.setHours(startHour, startMinute, 0, 0));
+        const endTime = new Date(currentTime.setHours(endHour, endMinute, 0, 0));
+
+        if (currentTime >= startTime && currentTime < endTime) {
+          currentProgram = program.name;
+        }
+
+        if (currentTime < startTime && !nextProgram) {
+          nextProgram = program.name;
+          timeToNextProgram = Math.floor((startTime - currentTime) / 60000);
+        }
+      });
+
+      const programmingList = document.getElementById("programming-list");
+      const countdown = document.getElementById("countdown");
+      programmingList.childNodes.forEach((li, index) => {
+        const programName = programming[index].name;
+        if (programName === currentProgram) {
+          li.innerHTML = `<strong>${programming[index].start} - ${programming[index].end}:</strong> ${programming[index].name} <span class="live">En Vivo</span>`;
+          li.style.color = "#ff0000"; // Rojo
+        } else {
+          li.style.color = "#000"; // Negro
+        }
+      });
+
+      if (currentProgram) {
+        countdown.innerHTML = "";
+      } else {
+        countdown.innerHTML = `⏳ Siguiente programa: ${nextProgram} en ${timeToNextProgram} minutos.`;
+      }
+    }
+
+    // Actualiza la programación cada minuto
+    setInterval(updateLiveSchedule, 60000);
+    updateLiveSchedule();
 
     // Función de solicitud (placeholder)
     function submitRequest() {
