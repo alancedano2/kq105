@@ -1,39 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KQ105 TV</title>
+  <title>KQ-105 En Vivo y Solicitudes</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 </head>
 <body>
   <div class="container">
     <!-- Logo -->
-    <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
+    <img class="logo"
+         src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png"
+         alt="KQ-105 Logo" />
 
-    <!-- Reproductor + Programación -->
-    <div class="media-row">
-      <!-- Reproductor -->
-      <div id="player-container">
-        <div id="player"></div>
-      </div>
-
-      <!-- Programación -->
-      <section class="programacion">
-        <h2>📻 Programación de Hoy</h2>
-        <ul>
-          <li><strong>12:00am - 6:00am:</strong> Videos Musicales Powered by KQ105</li>
-          <li><strong>6:00am - 10:00am:</strong> KQ Al Aire con Héctor Ortiz</li>
-          <li><strong>10:00am - 3:00pm:</strong> KQOnline con Alex Diaz</li>
-          <li><strong>3:00pm - 6:00pm:</strong> La Tendencia de Molusco con Ali, Pamela y Robert</li>
-          <li><strong>6:00pm - 7:00pm:</strong> KQ Al Aire con Pedro Villegas</li>
-          <li><strong>7:00pm - 12:00am:</strong> Videos Musicales Powered by KQ105</li>
-        </ul>
-      </section>
+    <!-- Reproductor Clappr -->
+    <div id="player-container">
+      <div id="player"></div>
     </div>
 
-    <!-- Solicitud de canciones -->
+    <!-- Programación -->
+    <section class="programacion">
+      <h2>📻 Programación de Hoy</h2>
+      <ul>
+        <li><strong>12:00am - 6:00am:</strong> Videos Musicales Powered by KQ105</li>
+        <li><strong>6:00am - 10:00am:</strong> KQ Al Aire con Héctor Ortiz</li>
+        <li><strong>10:00am - 3:00pm:</strong> KQOnline con Alex Diaz</li>
+        <li><strong>3:00pm - 6:00pm:</strong> La Tendencia de Molusco con Ali, Pamela y Robert</li>
+        <li><strong>6:00pm - 7:00pm:</strong> KQ Al Aire con Pedro Villegas</li>
+        <li><strong>7:00pm - 12:00am:</strong> Videos Musicales Powered by KQ105</li>
+      </ul>
+    </section>
+
+    <!-- Solicitud -->
     <div class="request">
       <h2>📨 Solicita tu Canción</h2>
       <form onsubmit="event.preventDefault(); submitRequest();">
@@ -45,26 +44,17 @@
   </div>
 
   <script>
-    const videoSrc = "https://dai.google.com/linear/hls/event/l7XnG3dXQPaW0Kcrj4ueXg/master.m3u8";
-    const player = document.createElement("video");
-    player.controls = true;
-    player.autoplay = true;
-    player.playsInline = true;
-    player.muted = false;
-    player.style.width = "100%";
-    player.style.height = "100%";
+    // Inicializa Clappr
+    new Clappr.Player({
+      source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
+      parentId: "#player",
+      autoPlay: true,
+      height: "100%",
+      width: "100%",
+      mute: false
+    });
 
-    const playerContainer = document.getElementById("player");
-    playerContainer.appendChild(player);
-
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(player);
-    } else if (player.canPlayType("application/vnd.apple.mpegurl")) {
-      player.src = videoSrc;
-    }
-
+    // Función de solicitud (placeholder)
     function submitRequest() {
       const input = document.getElementById("songRequest");
       const message = document.getElementById("message");
