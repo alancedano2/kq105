@@ -11,33 +11,19 @@ body {
 .container {
   text-align: center;
   width: 90%;
-  max-width: 1000px;
+  max-width: 800px;
 }
-
-/* Logo */
 .logo {
   width: 180px;
   margin-bottom: 20px;
   animation: fadeInDown 1s ease both;
 }
-
-/* Flex para el reproductor y programación */
-.media-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  align-items: flex-start;
-  margin-bottom: 30px;
-}
-
-/* Reproductor */
 #player-container {
-  flex: 1 1 400px;
-  max-width: 100%;
+  width: 100%;
   height: 0;
   padding-bottom: 56.25%;
   position: relative;
+  margin-bottom: 30px;
 }
 #player {
   position: absolute;
@@ -47,16 +33,12 @@ body {
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
-
-/* Programación */
 .programacion {
-  flex: 1 1 300px;
-  max-width: 100%;
-  text-align: left;
   background: rgba(255, 255, 255, 0.85);
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  text-align: left;
+  margin-bottom: 20px;
 }
 .programacion h2 {
   margin-top: 0;
@@ -68,8 +50,6 @@ body {
 .programacion li {
   margin-bottom: 10px;
 }
-
-/* Formulario */
 .request {
   background: rgba(255, 255, 255, 0.8);
   padding: 20px;
@@ -102,25 +82,7 @@ body {
 .request button:hover {
   background: #333;
 }
-
-/* Animación */
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .media-row {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #player-container, .programacion {
-    width: 100%;
-  }
-
-  .programacion {
-    margin-top: 20px;
-  }
 }
