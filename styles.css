@@ -11,19 +11,33 @@ body {
 .container {
   text-align: center;
   width: 90%;
-  max-width: 800px;
+  max-width: 1000px;
 }
+
+/* Logo */
 .logo {
   width: 180px;
   margin-bottom: 20px;
   animation: fadeInDown 1s ease both;
 }
+
+/* Flex para el reproductor y programación */
+.media-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+/* Reproductor */
 #player-container {
-  width: 100%;
+  flex: 1 1 400px;
+  max-width: 100%;
   height: 0;
   padding-bottom: 56.25%;
   position: relative;
-  margin-bottom: 30px;
 }
 #player {
   position: absolute;
@@ -33,6 +47,29 @@ body {
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
+
+/* Programación */
+.programacion {
+  flex: 1 1 300px;
+  max-width: 100%;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.programacion h2 {
+  margin-top: 0;
+}
+.programacion ul {
+  list-style: none;
+  padding: 0;
+}
+.programacion li {
+  margin-bottom: 10px;
+}
+
+/* Formulario */
 .request {
   background: rgba(255, 255, 255, 0.8);
   padding: 20px;
@@ -65,37 +102,25 @@ body {
 .request button:hover {
   background: #333;
 }
-#message {
-  margin-top: 15px;
-  font-size: 1rem;
-  min-height: 1.4em;
-}
-.programacion {
-  background: rgba(255, 255, 255, 0.9);
-  color: #000;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  margin-bottom: 30px;
-  animation: fadeInDown 1s ease both;
-}
-.programacion h2 {
-  margin-bottom: 15px;
-}
-.programacion ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.programacion li {
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
-  font-size: 1rem;
-}
-.programacion li:last-child {
-  border-bottom: none;
-}
+
+/* Animación */
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .media-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #player-container, .programacion {
+    width: 100%;
+  }
+
+  .programacion {
+    margin-top: 20px;
+  }
 }
