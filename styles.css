@@ -33,6 +33,33 @@ body {
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
+.en-vivo {
+  background-color: #ff0000;
+  color: white;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+}
+.programa-info {
+  background: rgba(255,255,255,0.85);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+.programa-info h3 {
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+.programa-info p {
+  margin: 5px 0;
+}
+.countdown {
+  font-weight: bold;
+  color: #ff6600;
+}
 .programacion {
   background: rgba(255, 255, 255, 0.85);
   padding: 20px;
