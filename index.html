@@ -4,100 +4,119 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KQ-105 En Vivo y Solicitudes</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #FFD700, #FFB300);
-      color: #000;
-      text-align: center;
+    .live-info {
+      background: rgba(255, 255, 255, 0.9);
       padding: 20px;
-    }
-    header img {
-      max-width: 200px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
       margin-bottom: 20px;
+      animation: fadeInDown 0.8s ease both;
     }
-    #player {
-      width: 90%;
-      max-width: 900px;
-      height: 500px;
-      margin: 0 auto 30px;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #000;
+    .live-info h2 {
+      margin: 0 0 10px;
+      font-size: 1.5rem;
+      color: #D32F2F;
     }
-    #now-playing {
-      font-size: 1.2rem;
-      margin: 10px auto 20px;
-      background: #fff3cd;
-      padding: 10px;
-      border-radius: 10px;
-      max-width: 700px;
-      border: 1px solid #ffeeba;
-    }
-    .request-form {
-      margin-top: 30px;
-    }
-    .request-form input {
-      padding: 10px;
-      width: 60%;
-      max-width: 400px;
-      font-size: 1rem;
-      margin-right: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .request-form button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      background: #000;
-      color: #FFD700;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .request-form button:hover {
-      background: #333;
-    }
-    #message {
-      margin-top: 15px;
+    .live-info p {
+      margin: 5px 0;
       font-size: 1.1rem;
-      min-height: 1.4em;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 </head>
 <body>
-  <header>
-    <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo">
-  </header>
+  <div class="container">
+    <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
 
-  <!-- Reproductor Clappr -->
-  <div id="player"></div>
+    <div id="player-container">
+      <div id="player"></div>
+    </div>
 
-  <!-- Cuadro de lo que está en vivo ahora -->
-  <div id="now-playing">Cargando programación...</div>
+    <div class="live-info" id="liveInfo">
+      <h2>EN VIVO 🔴</h2>
+      <p id="currentProgram">Cargando programación...</p>
+      <p id="timeRemaining"></p>
+    </div>
 
-  <!-- Formulario de solicitud -->
-  <div class="request-form">
-    <input type="text" id="songRequest" placeholder="Artista - Canción" />
-    <button onclick="submitRequest()">Solicitar Canción</button>
+    <div class="request">
+      <h2>Solicita tu canción</h2>
+      <form onsubmit="event.preventDefault(); submitRequest();">
+        <input type="text" id="songRequest" placeholder="Artista - Canción" />
+        <button type="submit">Solicitar</button>
+      </form>
+      <p id="message"></p>
+    </div>
   </div>
-  <div id="message"></div>
 
   <script>
-    // Clappr player
+    // Inicializa Clappr
     new Clappr.Player({
       source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
       parentId: "#player",
       autoPlay: true,
-      height: "100%",
-      width: "100%",
       mute: false
     });
 
-    // Solicitudes
+    const schedule = {
+      "Monday": [
+        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ],
+      "Tuesday": [
+        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ],
+      "Wednesday": [
+        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ],
+      "Thursday": [
+        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ],
+      "Friday": [
+        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ],
+      "Saturday": [
+        { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
+        { start: "19:00", end: "21:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
+        { start: "21:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ],
+      "Sunday": [
+        { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
+        { start: "18:00", end: "20:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
+        { start: "20:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ]
+    };
+
+    function getCurrentProgram() {
+      const now = new Date();
+      const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const currentTime = now.getHours().toString().padStart(2, '0') + ":" +
+                          now.getMinutes().toString().padStart(2, '0');
+
+      const todaySchedule = schedule[dayName];
+      for (const slot of todaySchedule) {
+        if (currentTime >= slot.start && currentTime < slot.end) {
+          document.getElementById("currentProgram").innerText = slot.name;
+
+          const [endHour, endMin] = slot.end.split(":").map(Number);
+          const endTime = new Date();
+          endTime.setHours(endHour, endMin, 0);
+          const diffMs = endTime - now;
+          const diffMin = Math.floor(diffMs / 60000);
+          const hoursLeft = Math.floor(diffMin / 60);
+          const minsLeft = diffMin % 60;
+          document.getElementById("timeRemaining").innerText = `Termina en ${hoursLeft}h ${minsLeft}min`;
+          return;
+        }
+      }
+
+      document.getElementById("currentProgram").innerText = "Sin programación actual.";
+      document.getElementById("timeRemaining").innerText = "";
+    }
+
+    setInterval(getCurrentProgram, 60000); // actualizar cada minuto
+    getCurrentProgram();
+
     async function submitRequest() {
       const song = document.getElementById('songRequest').value.trim();
       const msgEl = document.getElementById('message');
@@ -105,7 +124,9 @@
         msgEl.innerText = 'Por favor ingresa Artista - Canción.';
         return;
       }
+
       const SERVER_URL = 'https://524c-2607-f00-9-d6de-3953-d50f-8fde-ca14.ngrok-free.app';
+
       try {
         const res = await fetch(`${SERVER_URL}/add-to-playlist`, {
           method: 'POST',
@@ -118,59 +139,9 @@
         console.error(e);
         msgEl.innerText = 'No se pudo conectar con el servidor local.';
       }
+
       document.getElementById('songRequest').value = '';
     }
-
-    // Programación del fin de semana
-    const schedule = {
-      6: [ // Sábado
-        { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
-        { start: "19:00", end: "21:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
-        { start: "21:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
-      ],
-      0: [ // Domingo
-        { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
-        { start: "18:00", end: "20:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
-        { start: "20:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
-      ]
-    };
-
-    function getCurrentShow() {
-      const now = new Date();
-      const day = now.getDay();
-      const currentTime = now.getHours().toString().padStart(2, '0') + ":" +
-                          now.getMinutes().toString().padStart(2, '0');
-
-      const daySchedule = schedule[day];
-      if (!daySchedule) {
-        return { name: "Programación especial fuera del fin de semana", timeLeft: null };
-      }
-
-      for (const block of daySchedule) {
-        if (currentTime >= block.start && currentTime < block.end) {
-          const [endH, endM] = block.end.split(":").map(Number);
-          const end = new Date(now);
-          end.setHours(endH, endM, 0, 0);
-          const diffMs = end - now;
-          const minutes = Math.floor(diffMs / 60000);
-          const hours = Math.floor(minutes / 60);
-          const mins = minutes % 60;
-          const timeLeft = `${hours > 0 ? hours + "h " : ""}${mins}m restantes`;
-          return { name: block.name, timeLeft };
-        }
-      }
-
-      return { name: "Fuera del horario regular", timeLeft: null };
-    }
-
-    function updateNowPlaying() {
-      const { name, timeLeft } = getCurrentShow();
-      document.getElementById('now-playing').innerText = `Ahora: ${name}` + 
-        (timeLeft ? ` — ${timeLeft}` : '');
-    }
-
-    updateNowPlaying();
-    setInterval(updateNowPlaying, 60000); // Actualiza cada minuto
   </script>
 </body>
 </html>
