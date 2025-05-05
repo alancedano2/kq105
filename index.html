@@ -1,149 +1,176 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>KQ 105 - Programación</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KQ-105 En Vivo y Solicitudes</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #FFD700, #FFC107);
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #FFD700, #FFB300);
       color: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      text-align: center;
       padding: 20px;
     }
-
-    #player {
-      width: 100%;
-      max-width: 800px;
-      height: 450px;
+    header img {
+      max-width: 200px;
       margin-bottom: 20px;
-      border-radius: 12px;
+    }
+    #player {
+      width: 90%;
+      max-width: 900px;
+      height: 500px;
+      margin: 0 auto 30px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      background: #000;
     }
-
-    .programacion {
-      background: rgba(255, 255, 255, 0.85);
-      padding: 20px;
-      border-radius: 12px;
-      text-align: left;
-      width: 100%;
-      max-width: 800px;
+    #now-playing {
+      font-size: 1.2rem;
+      margin: 10px auto 20px;
+      background: #fff3cd;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 700px;
+      border: 1px solid #ffeeba;
     }
-
-    .programacion h2 {
-      margin-top: 0;
+    .request-form {
+      margin-top: 30px;
     }
-
-    .programacion ul {
-      list-style: none;
-      padding: 0;
+    .request-form input {
+      padding: 10px;
+      width: 60%;
+      max-width: 400px;
+      font-size: 1rem;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
-
-    .programacion li {
-      margin-bottom: 10px;
+    .request-form button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #000;
+      color: #FFD700;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-
-    .live {
-      color: red;
-      font-weight: bold;
+    .request-form button:hover {
+      background: #333;
     }
-
-    #countdown {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #d00;
+    #message {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      min-height: 1.4em;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 </head>
 <body>
+  <header>
+    <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo">
+  </header>
 
-  <!-- Reproductor Clappr original intacto -->
+  <!-- Reproductor Clappr -->
   <div id="player"></div>
 
-  <!-- Contenedor de programación -->
-  <div class="programacion">
-    <h2>Programación de hoy</h2>
-    <ul id="lista-programacion">
-      <li>Cargando programación...</li>
-    </ul>
-    <div id="countdown"></div>
-  </div>
+  <!-- Cuadro de lo que está en vivo ahora -->
+  <div id="now-playing">Cargando programación...</div>
 
-  <!-- Clappr Player Script -->
-  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <!-- Formulario de solicitud -->
+  <div class="request-form">
+    <input type="text" id="songRequest" placeholder="Artista - Canción" />
+    <button onclick="submitRequest()">Solicitar Canción</button>
+  </div>
+  <div id="message"></div>
+
   <script>
-    const player = new Clappr.Player({
-      source: "https://playerservices.streamtheworld.com/api/livestream-redirect/WKAQFM_SC",
+    // Clappr player
+    new Clappr.Player({
+      source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
       parentId: "#player",
       autoPlay: true,
+      height: "100%",
+      width: "100%",
       mute: false
     });
-  </script>
 
-  <!-- Programación Script -->
-  <script>
-    const sabado = [
-      { inicio: 0, fin: 18, titulo: "Videos Musicales powered by KQ 105" },
-      { inicio: 19, fin: 21, titulo: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
-      { inicio: 21, fin: 24, titulo: "Videos Musicales powered by KQ 105" }
-    ];
-
-    const domingo = [
-      { inicio: 0, fin: 18, titulo: "Videos Musicales powered by KQ 105" },
-      { inicio: 18, fin: 20, titulo: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
-      { inicio: 20, fin: 24, titulo: "Videos Musicales powered by KQ 105" }
-    ];
-
-    function mostrarProgramacion() {
-      const ahora = new Date();
-      const dia = ahora.getDay(); // 0 = domingo, 6 = sábado
-      const hora = ahora.getHours();
-      const minutos = ahora.getMinutes();
-
-      let programacion = [];
-      if (dia === 6) programacion = sabado;
-      else if (dia === 0) programacion = domingo;
-      else {
-        document.getElementById('lista-programacion').innerHTML = "<li>No hay programación especial hoy.</li>";
-        document.getElementById('countdown').textContent = "";
+    // Solicitudes
+    async function submitRequest() {
+      const song = document.getElementById('songRequest').value.trim();
+      const msgEl = document.getElementById('message');
+      if (!song) {
+        msgEl.innerText = 'Por favor ingresa Artista - Canción.';
         return;
       }
-
-      const lista = document.getElementById('lista-programacion');
-      lista.innerHTML = '';
-
-      let actual = null;
-      programacion.forEach(bloque => {
-        const esAhora = hora >= bloque.inicio && hora < bloque.fin;
-        const texto = `${bloque.inicio}:00 - ${bloque.fin}:00 ${bloque.titulo}`;
-        const li = document.createElement('li');
-        li.textContent = texto;
-        if (esAhora) {
-          li.classList.add('live');
-          actual = bloque;
-        }
-        lista.appendChild(li);
-      });
-
-      if (actual) {
-        const fin = new Date();
-        fin.setHours(actual.fin, 0, 0, 0);
-        const msRestantes = fin - ahora;
-        const minsRestantes = Math.floor(msRestantes / 60000);
-        const hrs = Math.floor(minsRestantes / 60);
-        const mins = minsRestantes % 60;
-        document.getElementById('countdown').textContent = `Faltan ${hrs}h ${mins}m para que termine el programa actual.`;
-      } else {
-        document.getElementById('countdown').textContent = '';
+      const SERVER_URL = 'https://524c-2607-f00-9-d6de-3953-d50f-8fde-ca14.ngrok-free.app';
+      try {
+        const res = await fetch(`${SERVER_URL}/add-to-playlist`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ song })
+        });
+        const data = await res.json();
+        msgEl.innerText = data.message;
+      } catch (e) {
+        console.error(e);
+        msgEl.innerText = 'No se pudo conectar con el servidor local.';
       }
+      document.getElementById('songRequest').value = '';
     }
 
-    mostrarProgramacion();
-    setInterval(mostrarProgramacion, 60000); // actualiza cada minuto
+    // Programación del fin de semana
+    const schedule = {
+      6: [ // Sábado
+        { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
+        { start: "19:00", end: "21:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
+        { start: "21:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ],
+      0: [ // Domingo
+        { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
+        { start: "18:00", end: "20:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
+        { start: "20:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ]
+    };
+
+    function getCurrentShow() {
+      const now = new Date();
+      const day = now.getDay();
+      const currentTime = now.getHours().toString().padStart(2, '0') + ":" +
+                          now.getMinutes().toString().padStart(2, '0');
+
+      const daySchedule = schedule[day];
+      if (!daySchedule) {
+        return { name: "Programación especial fuera del fin de semana", timeLeft: null };
+      }
+
+      for (const block of daySchedule) {
+        if (currentTime >= block.start && currentTime < block.end) {
+          const [endH, endM] = block.end.split(":").map(Number);
+          const end = new Date(now);
+          end.setHours(endH, endM, 0, 0);
+          const diffMs = end - now;
+          const minutes = Math.floor(diffMs / 60000);
+          const hours = Math.floor(minutes / 60);
+          const mins = minutes % 60;
+          const timeLeft = `${hours > 0 ? hours + "h " : ""}${mins}m restantes`;
+          return { name: block.name, timeLeft };
+        }
+      }
+
+      return { name: "Fuera del horario regular", timeLeft: null };
+    }
+
+    function updateNowPlaying() {
+      const { name, timeLeft } = getCurrentShow();
+      document.getElementById('now-playing').innerText = `Ahora: ${name}` + 
+        (timeLeft ? ` — ${timeLeft}` : '');
+    }
+
+    updateNowPlaying();
+    setInterval(updateNowPlaying, 60000); // Actualiza cada minuto
   </script>
 </body>
 </html>
