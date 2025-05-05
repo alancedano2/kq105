@@ -6,17 +6,6 @@
   <title>KQ-105</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <style>
-    .en-vivo {
-      background-color: #ff0000;
-      color: white;
-      padding: 10px;
-      margin-bottom: 15px;
-      font-weight: bold;
-      text-align: center;
-      border-radius: 8px;
-    }
-  </style>
 </head>
 <body>
   <div class="container">
@@ -31,6 +20,16 @@
     <!-- Reproductor Clappr -->
     <div id="player-container">
       <div id="player"></div>
+    </div>
+
+    <!-- Información del programa actual -->
+    <div class="programacion">
+      <h2 class="live">Ahora mismo</h2>
+      <div class="programa-info">
+        <h3 id="programTitle">Cargando...</h3>
+        <p id="programDescription">Cargando descripción...</p>
+        <p id="countdownTime" class="countdown">Tiempo restante: Cargando...</p>
+      </div>
     </div>
 
     <!-- Programación en la semana -->
@@ -68,7 +67,7 @@
   </div>
 
   <script>
-    // Reproductor Clappr
+    // Inicializa Clappr
     new Clappr.Player({
       source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
       parentId: "#player",
@@ -78,35 +77,61 @@
       width: "100%"
     });
 
-    // Mostrar qué está en vivo
-    function getCurrentShow() {
-      const now = new Date();
-      const day = now.getDay(); // Domingo = 0, Sábado = 6
-      const hour = now.getHours();
-      const min = now.getMinutes();
-      const time = hour + min / 60;
+    const weekdaySchedule = [
+      { start: 0, end: 6, show: "Videos Musicales Powered by KQ105", description: "Disfruta de los mejores videos musicales de todos los tiempos." },
+      { start: 6, end: 10, show: "KQ Al Aire con Héctor Ortiz", description: "Con Héctor Ortiz, las mejores noticias y entretenimiento." },
+      { start: 10, end: 15, show: "KQOnline con Alex Diaz", description: "Alex Diaz te trae lo último en tecnología y cultura." },
+      { start: 15, end: 18, show: "La Tendencia de Molusco con Ali, Pamela y Robert", description: "Lo mejor de la farándula y el entretenimiento." },
+      { start: 18, end: 19, show: "KQ Al Aire con Pedro Villegas", description: "Pedro Villegas te acompaña con las mejores canciones y noticias." },
+      { start: 19, end: 24, show: "Videos Musicales Powered by KQ105", description: "Continúa disfrutando de los mejores videos musicales." },
+    ];
 
-      const weekdaySchedule = [
-        { start: 0, end: 6, show: "Videos Musicales Powered by KQ105" },
-        { start: 6, end: 10, show: "KQ Al Aire con Héctor Ortiz" },
-        { start: 10, end: 15, show: "KQOnline con Alex Diaz" },
-        { start: 15, end: 18, show: "La Tendencia de Molusco con Ali, Pamela y Robert" },
-        { start: 18, end: 19, show: "KQ Al Aire con Pedro Villegas" },
-        { start: 19, end: 24, show: "Videos Musicales Powered by KQ105" },
-      ];
+    const weekendSchedule = [
+      { start: 0, end: 19, show: "Videos Musicales Powered by KQ105", description: "Un día completo de videos musicales." },
+      { start: 19, end: 21, show: "Top 20 Countdown", description: "Los 20 mejores éxitos de la semana." },
+      { start: 21, end: 24, show: "Videos Musicales Powered by KQ105", description: "Más música para ti." },
+    ];
 
-      const weekendSchedule = [
-        { start: 0, end: 19, show: "Videos Musicales Powered by KQ105" },
-        { start: 19, end: 21, show: "Top 20 Countdown" },
-        { start: 21, end: 24, show: "Videos Musicales Powered by KQ105" },
-      ];
-
-      const schedule = (day === 0 || day === 6) ? weekendSchedule : weekdaySchedule;
-      const current = schedule.find(slot => time >= slot.start && time < slot.end);
-      return current ? current.show : "Programación no disponible";
+    function formatTimeDiff(diffHours) {
+      const h = Math.floor(diffHours);
+      const m = Math.floor((diffHours - h) * 60);
+      return `${h}h ${m}m`;
     }
 
-    document.getElementById("liveNow").textContent = `🔴 En vivo ahora: ${getCurrentShow()}`;
+    function updateLiveInfo() {
+      const now = new Date();
+      const day = now.getDay(); // 0=domingo,6=sábado
+      const t = now.getHours() + now.getMinutes() / 60;
+      const schedule = (day === 0 || day === 6) ? weekendSchedule : weekdaySchedule;
+
+      let current = schedule[0], nextSlot;
+      for (let i = 0; i < schedule.length; i++) {
+        const slot = schedule[i];
+        if (t >= slot.start && t < slot.end) {
+          current = slot;
+          nextSlot = schedule[i+1];
+          break;
+        }
+      }
+
+      document.getElementById('liveNow').textContent = `🔴 En vivo ahora: ${current.show}`;
+      document.getElementById('programTitle').textContent = current.show;
+      document.getElementById('programDescription').textContent = current.description;
+
+      if (nextSlot) {
+        const diff = formatTimeDiff(nextSlot.start - t);
+        document.getElementById('countdownTime').textContent = `Tiempo restante: ${diff}`;
+      } else {
+        document.getElementById('countdownTime').textContent = '';
+      }
+    }
+
+    updateLiveInfo();
+    setInterval(updateLiveInfo, 60000);
+
+    function submitRequest() {
+      document.getElementById('message').textContent = 'Este módulo está deshabilitado.';
+    }
   </script>
 </body>
 </html>
