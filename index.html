@@ -14,22 +14,16 @@
          src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png"
          alt="KQ-105 Logo" />
 
-    <!-- En Vivo -->
-    <div class="en-vivo" id="liveNow">🔴 En vivo ahora: Cargando...</div>
+    <!-- Información del programa actual -->
+    <div class="programa-info">
+      <h3 id="programTitle">Cargando...</h3>
+      <p id="programDescription">Cargando descripción...</p>
+      <p id="countdownTime" class="countdown">Tiempo restante: Cargando...</p>
+    </div>
 
     <!-- Reproductor Clappr -->
     <div id="player-container">
       <div id="player"></div>
-    </div>
-
-    <!-- Información del programa actual -->
-    <div class="programacion">
-      <h2 class="live">Ahora mismo</h2>
-      <div class="programa-info">
-        <h3 id="programTitle">Cargando...</h3>
-        <p id="programDescription">Cargando descripción...</p>
-        <p id="countdownTime" class="countdown">Tiempo restante: Cargando...</p>
-      </div>
     </div>
 
     <!-- Programación en la semana -->
@@ -114,7 +108,6 @@
         }
       }
 
-      document.getElementById('liveNow').textContent = `🔴 En vivo ahora: ${current.show}`;
       document.getElementById('programTitle').textContent = current.show;
       document.getElementById('programDescription').textContent = current.description;
 
