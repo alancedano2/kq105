@@ -30,7 +30,7 @@
     <section class="programacion">
       <h2>🎶 Programación de Fin de Semana</h2>
       <ul id="weekendSchedule">
-        <!-- Programación se actualizará dinámicamente -->
+        <!-- Se llenará dinámicamente -->
       </ul>
     </section>
 
@@ -56,68 +56,91 @@
       width: "100%"
     });
 
-    // Configuración de horarios
+    // Horarios entre semana
     const weekdaySchedule = [
       { start: 0, end: 6, show: "Videos Musicales Powered by KQ105", description: "Disfruta de los mejores videos musicales de todos los tiempos." },
       { start: 6, end: 10, show: "KQ Al Aire con Héctor Ortiz", description: "Con Héctor Ortiz, las mejores noticias y entretenimiento." },
       { start: 10, end: 15, show: "KQOnline con Alex Diaz", description: "Alex Diaz te trae lo último en tecnología y cultura." },
       { start: 15, end: 18, show: "La Tendencia de Molusco con Ali, Pamela y Robert", description: "Lo mejor de la farándula y el entretenimiento." },
       { start: 18, end: 19, show: "KQ Al Aire con Pedro Villegas", description: "Pedro Villegas te acompaña con las mejores canciones y noticias." },
-      { start: 19, end: 24, show: "Videos Musicales Powered by KQ105", description: "Continúa disfrutando de los mejores videos musicales." },
+      { start: 19, end: 24, show: "Videos Musicales Powered by KQ105", description: "Continúa disfrutando de los mejores videos musicales." }
     ];
 
-    const weekendSchedule = [
-      { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." },
-      { start: 19, end: 21, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", description: "Los 20 mejores éxitos de la semana." },
-      { start: 21, end: 24, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." }
-    ];
+    // Horarios fin de semana (sábado y domingo)
+    const weekendSchedule = {
+      6: [ // sábado
+        { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." },
+        { start: 19, end: 21, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", description: "Los 20 mejores éxitos de la semana." },
+        { start: 21, end: 24, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." }
+      ],
+      0: [ // domingo
+        { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." },
+        { start: 18, end: 20, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", description: "Los 20 mejores éxitos de la semana." },
+        { start: 20, end: 24, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." }
+      ]
+    };
 
-    function toHours(t) {
-      const [h,m,period] = t.match(/(\d+):(\d+)(am|pm)/i).slice(1);
-      let hr = parseInt(h) % 12 + (period.toLowerCase() === 'pm' ? 12 : 0);
-      return hr + parseInt(m)/60;
-    }
-
-    // Actualizar info en vivo
-    function updateLiveInfo() {
+    function updateLiveAndSchedule() {
       const now = new Date();
-      const day = now.getDay(); // 0=domingo,6=sábado
-      const t = now.getHours() + now.getMinutes()/60;
-      const schedule = (day===6 || day===0) ? weekendSchedule : weekdaySchedule;
+      const day = now.getDay(); // 0 = domingo, 6 = sábado
+      const time = now.getHours() + now.getMinutes() / 60;
 
-      // Encontrar slot actual y siguiente
+      // Selección de programación
+      const schedule = (day === 0 || day === 6)
+        ? weekendSchedule[day]
+        : weekdaySchedule;
+
+      // Encontrar programa actual y siguiente
       let current = schedule[0], next;
-      for (let i=0;i<schedule.length;i++){
-        const slot = schedule[i];
-        if (t>=slot.start && t<slot.end) { current=slot; next=schedule[i+1]; break; }
+      for (let i = 0; i < schedule.length; i++) {
+        if (time >= schedule[i].start && time < schedule[i].end) {
+          current = schedule[i];
+          next = schedule[i + 1];
+          break;
+        }
       }
 
+      // Actualizar bloque de programa en vivo
       document.getElementById('programTitle').textContent = current.show;
       document.getElementById('programDescription').textContent = current.description;
 
+      // Contador de tiempo restante
       const countdownEl = document.getElementById('countdownTime');
-      if(next) {
-        const diff = Math.max(0, next.start - t);
-        const h=Math.floor(diff), m=Math.floor((diff-h)*60);
+      if (next) {
+        const diff = Math.max(0, next.start - time);
+        const h = Math.floor(diff), m = Math.floor((diff - h) * 60);
         countdownEl.textContent = `Tiempo restante: ${h}h ${m}m`;
-      } else countdownEl.textContent='';
+      } else {
+        countdownEl.textContent = '';
+      }
 
-      // Programación fin de semana dinámica
-      if(day===6||day===0){
-        const list=document.getElementById('weekendSchedule'); list.innerHTML='';
-        schedule.forEach(slot=>{
-          const li=document.createElement('li');
-          li.innerHTML=`<strong>${formatSlot(slot.start)} - ${formatSlot(slot.end)}:</strong> ${slot.show}`;
-          list.appendChild(li);
+      // Llenar lista de fin de semana si aplica
+      if (day === 0 || day === 6) {
+        const listEl = document.getElementById('weekendSchedule');
+        listEl.innerHTML = '';
+        schedule.forEach(slot => {
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${formatHour(slot.start)} - ${formatHour(slot.end)}:</strong> ${slot.show}`;
+          listEl.appendChild(li);
         });
       }
     }
 
-    function formatSlot(h){ return (h%24).toString().padStart(2,'0')+':00'; }
+    function formatHour(h) {
+      // convierte 0-24 a formato hh:mm am/pm si lo necesitas, o deja hh:00
+      const hr = Math.floor(h);
+      const mn = Math.round((h - hr) * 60);
+      const suffix = hr >= 12 ? 'pm' : 'am';
+      const displayHr = ((hr + 11) % 12 + 1);
+      return `${displayHr}:${mn.toString().padStart(2,'0')}${suffix}`;
+    }
 
-    updateLiveInfo(); setInterval(updateLiveInfo,60000);
+    updateLiveAndSchedule();
+    setInterval(updateLiveAndSchedule, 60000);
 
-    function submitRequest(){ document.getElementById('message').textContent='Módulo no disponible.'; }
+    function submitRequest() {
+      document.getElementById('message').textContent = 'Módulo no disponible.';
+    }
   </script>
 </body>
 </html>
