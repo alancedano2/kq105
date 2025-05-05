@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KQ-105 En Vivo y Solicitudes</title>
+  <title>KQ-105</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
   <style>
@@ -14,6 +14,9 @@
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       margin-bottom: 20px;
       animation: fadeInDown 0.8s ease both;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .live-info h2 {
       margin: 0 0 10px;
@@ -28,120 +31,110 @@
 </head>
 <body>
   <div class="container">
+    <!-- Logo -->
     <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
 
+    <!-- Reproductor Clappr -->
     <div id="player-container">
       <div id="player"></div>
     </div>
 
+    <!-- Cuadro EN VIVO -->
     <div class="live-info" id="liveInfo">
-      <h2>EN VIVO 🔴</h2>
+      <h2>🔴 EN VIVO AHORA</h2>
       <p id="currentProgram">Cargando programación...</p>
       <p id="timeRemaining"></p>
     </div>
 
-    <div class="request">
-      <h2>Solicita tu canción</h2>
-      <form onsubmit="event.preventDefault(); submitRequest();">
-        <input type="text" id="songRequest" placeholder="Artista - Canción" />
-        <button type="submit">Solicitar</button>
-      </form>
-      <p id="message"></p>
-    </div>
+    <!-- Programación semanal -->
+    <section class="programacion">
+      <h2>📻 Programación en la semana</h2>
+      <ul>
+        <li><strong>12:00am - 6:00am:</strong> Videos Musicales Powered by KQ105</li>
+        <li><strong>6:00am - 10:00am:</strong> KQ Al Aire con Héctor Ortiz</li>
+        <li><strong>10:00am - 3:00pm:</strong> KQOnline con Alex Diaz</li>
+        <li><strong>3:00pm - 6:00pm:</strong> La Tendencia de Molusco con Ali, Pamela y Robert</li>
+        <li><strong>6:00pm - 7:00pm:</strong> KQ Al Aire con Pedro Villegas</li>
+        <li><strong>7:00pm - 12:00am:</strong> Videos Musicales Powered by KQ105</li>
+      </ul>
+    </section>
+
+    <section class="programacion">
+      <h2>🎶 Programación de Fin de Semana</h2>
+      <ul>
+        <li><strong>Sábado:</strong></li>
+        <li><strong>12:00am - 6:00pm:</strong> Videos Musicales powered by KQ 105</li>
+        <li><strong>7:00pm - 9:00pm:</strong> Top 20 CountDown con Manolo Castro y Dessire Lowry</li>
+        <li><strong>9:00pm - 12:00am:</strong> Videos Musicales powered by KQ 105</li>
+        <li><strong>Domingo:</strong></li>
+        <li><strong>12:00am - 6:00pm:</strong> Videos Musicales powered by KQ 105</li>
+        <li><strong>6:00pm - 8:00pm:</strong> Top 20 CountDown con Manolo Castro y Dessire Lowry</li>
+        <li><strong>8:00pm - 12:00am:</strong> Videos Musicales powered by KQ 105</li>
+      </ul>
+    </section>
   </div>
 
   <script>
-    // Inicializa Clappr
+    // Clappr player
     new Clappr.Player({
       source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
       parentId: "#player",
       autoPlay: true,
+      height: "100%",
+      width: "100%",
       mute: false
     });
 
     const schedule = {
-      "Monday": [
-        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      Monday: [
+        { start: "00:00", end: "06:00", name: "Videos Musicales Powered by KQ105" },
+        { start: "06:00", end: "10:00", name: "KQ Al Aire con Héctor Ortiz" },
+        { start: "10:00", end: "15:00", name: "KQOnline con Alex Diaz" },
+        { start: "15:00", end: "18:00", name: "La Tendencia de Molusco con Ali, Pamela y Robert" },
+        { start: "18:00", end: "19:00", name: "KQ Al Aire con Pedro Villegas" },
+        { start: "19:00", end: "23:59", name: "Videos Musicales Powered by KQ105" }
       ],
-      "Tuesday": [
-        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
-      ],
-      "Wednesday": [
-        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
-      ],
-      "Thursday": [
-        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
-      ],
-      "Friday": [
-        { start: "00:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
-      ],
-      "Saturday": [
+      Saturday: [
         { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
         { start: "19:00", end: "21:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
         { start: "21:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
       ],
-      "Sunday": [
+      Sunday: [
         { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
         { start: "18:00", end: "20:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
         { start: "20:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
       ]
     };
 
-    function getCurrentProgram() {
+    function updateLiveProgram() {
       const now = new Date();
-      const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
-      const currentTime = now.getHours().toString().padStart(2, '0') + ":" +
-                          now.getMinutes().toString().padStart(2, '0');
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const current = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
 
-      const todaySchedule = schedule[dayName];
-      for (const slot of todaySchedule) {
-        if (currentTime >= slot.start && currentTime < slot.end) {
-          document.getElementById("currentProgram").innerText = slot.name;
+      const todaySchedule = schedule[day] || [];
 
-          const [endHour, endMin] = slot.end.split(":").map(Number);
-          const endTime = new Date();
-          endTime.setHours(endHour, endMin, 0);
-          const diffMs = endTime - now;
-          const diffMin = Math.floor(diffMs / 60000);
-          const hoursLeft = Math.floor(diffMin / 60);
-          const minsLeft = diffMin % 60;
-          document.getElementById("timeRemaining").innerText = `Termina en ${hoursLeft}h ${minsLeft}min`;
+      for (let slot of todaySchedule) {
+        if (current >= slot.start && current < slot.end) {
+          const [endH, endM] = slot.end.split(":").map(Number);
+          const endTime = new Date(now);
+          endTime.setHours(endH, endM, 0);
+          const remainingMs = endTime - now;
+          const minutes = Math.floor(remainingMs / 60000);
+          const hours = Math.floor(minutes / 60);
+          const mins = minutes % 60;
+
+          document.getElementById('currentProgram').innerText = slot.name;
+          document.getElementById('timeRemaining').innerText = `Termina en ${hours}h ${mins}min`;
           return;
         }
       }
 
-      document.getElementById("currentProgram").innerText = "Sin programación actual.";
-      document.getElementById("timeRemaining").innerText = "";
+      document.getElementById('currentProgram').innerText = "Sin programación actual";
+      document.getElementById('timeRemaining').innerText = "";
     }
 
-    setInterval(getCurrentProgram, 60000); // actualizar cada minuto
-    getCurrentProgram();
-
-    async function submitRequest() {
-      const song = document.getElementById('songRequest').value.trim();
-      const msgEl = document.getElementById('message');
-      if (!song) {
-        msgEl.innerText = 'Por favor ingresa Artista - Canción.';
-        return;
-      }
-
-      const SERVER_URL = 'https://524c-2607-f00-9-d6de-3953-d50f-8fde-ca14.ngrok-free.app';
-
-      try {
-        const res = await fetch(`${SERVER_URL}/add-to-playlist`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ song })
-        });
-        const data = await res.json();
-        msgEl.innerText = data.message;
-      } catch (e) {
-        console.error(e);
-        msgEl.innerText = 'No se pudo conectar con el servidor local.';
-      }
-
-      document.getElementById('songRequest').value = '';
-    }
+    updateLiveProgram();
+    setInterval(updateLiveProgram, 60000);
   </script>
 </body>
 </html>
