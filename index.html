@@ -26,26 +26,11 @@
       <div id="player"></div>
     </div>
 
-    <!-- Programación en la semana -->
-    <section class="programacion">
-      <h2>📻 Programación en la semana</h2>
-      <ul>
-        <li><strong>12:00am - 6:00am:</strong> Videos Musicales Powered by KQ105</li>
-        <li><strong>6:00am - 10:00am:</strong> KQ Al Aire con Héctor Ortiz</li>
-        <li><strong>10:00am - 3:00pm:</strong> KQOnline con Alex Diaz</li>
-        <li><strong>3:00pm - 6:00pm:</strong> La Tendencia de Molusco con Ali, Pamela y Robert</li>
-        <li><strong>6:00pm - 7:00pm:</strong> KQ Al Aire con Pedro Villegas</li>
-        <li><strong>7:00pm - 12:00am:</strong> Videos Musicales Powered by KQ105</li>
-      </ul>
-    </section>
-
     <!-- Programación de Fin de Semana -->
     <section class="programacion">
       <h2>🎶 Programación de Fin de Semana</h2>
-      <ul>
-        <li><strong>12:00am - 7:00pm:</strong> Videos Musicales Powered by KQ105</li>
-        <li><strong>7:00pm - 9:00pm:</strong> Top 20 Countdown</li>
-        <li><strong>9:00pm - 12:00am:</strong> Videos Musicales Powered by KQ105</li>
+      <ul id="weekendSchedule">
+        <!-- Programación se actualizará dinámicamente -->
       </ul>
     </section>
 
@@ -71,6 +56,7 @@
       width: "100%"
     });
 
+    // Configuración de horarios
     const weekdaySchedule = [
       { start: 0, end: 6, show: "Videos Musicales Powered by KQ105", description: "Disfruta de los mejores videos musicales de todos los tiempos." },
       { start: 6, end: 10, show: "KQ Al Aire con Héctor Ortiz", description: "Con Héctor Ortiz, las mejores noticias y entretenimiento." },
@@ -81,50 +67,57 @@
     ];
 
     const weekendSchedule = [
-      { start: 0, end: 19, show: "Videos Musicales Powered by KQ105", description: "Un día completo de videos musicales." },
-      { start: 19, end: 21, show: "Top 20 Countdown", description: "Los 20 mejores éxitos de la semana." },
-      { start: 21, end: 24, show: "Videos Musicales Powered by KQ105", description: "Más música para ti." },
+      { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." },
+      { start: 19, end: 21, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", description: "Los 20 mejores éxitos de la semana." },
+      { start: 21, end: 24, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." }
     ];
 
-    function formatTimeDiff(diffHours) {
-      const h = Math.floor(diffHours);
-      const m = Math.floor((diffHours - h) * 60);
-      return `${h}h ${m}m`;
+    function toHours(t) {
+      const [h,m,period] = t.match(/(\d+):(\d+)(am|pm)/i).slice(1);
+      let hr = parseInt(h) % 12 + (period.toLowerCase() === 'pm' ? 12 : 0);
+      return hr + parseInt(m)/60;
     }
 
+    // Actualizar info en vivo
     function updateLiveInfo() {
       const now = new Date();
       const day = now.getDay(); // 0=domingo,6=sábado
-      const t = now.getHours() + now.getMinutes() / 60;
-      const schedule = (day === 0 || day === 6) ? weekendSchedule : weekdaySchedule;
+      const t = now.getHours() + now.getMinutes()/60;
+      const schedule = (day===6 || day===0) ? weekendSchedule : weekdaySchedule;
 
-      let current = schedule[0], nextSlot;
-      for (let i = 0; i < schedule.length; i++) {
+      // Encontrar slot actual y siguiente
+      let current = schedule[0], next;
+      for (let i=0;i<schedule.length;i++){
         const slot = schedule[i];
-        if (t >= slot.start && t < slot.end) {
-          current = slot;
-          nextSlot = schedule[i+1];
-          break;
-        }
+        if (t>=slot.start && t<slot.end) { current=slot; next=schedule[i+1]; break; }
       }
 
       document.getElementById('programTitle').textContent = current.show;
       document.getElementById('programDescription').textContent = current.description;
 
-      if (nextSlot) {
-        const diff = formatTimeDiff(nextSlot.start - t);
-        document.getElementById('countdownTime').textContent = `Tiempo restante: ${diff}`;
-      } else {
-        document.getElementById('countdownTime').textContent = '';
+      const countdownEl = document.getElementById('countdownTime');
+      if(next) {
+        const diff = Math.max(0, next.start - t);
+        const h=Math.floor(diff), m=Math.floor((diff-h)*60);
+        countdownEl.textContent = `Tiempo restante: ${h}h ${m}m`;
+      } else countdownEl.textContent='';
+
+      // Programación fin de semana dinámica
+      if(day===6||day===0){
+        const list=document.getElementById('weekendSchedule'); list.innerHTML='';
+        schedule.forEach(slot=>{
+          const li=document.createElement('li');
+          li.innerHTML=`<strong>${formatSlot(slot.start)} - ${formatSlot(slot.end)}:</strong> ${slot.show}`;
+          list.appendChild(li);
+        });
       }
     }
 
-    updateLiveInfo();
-    setInterval(updateLiveInfo, 60000);
+    function formatSlot(h){ return (h%24).toString().padStart(2,'0')+':00'; }
 
-    function submitRequest() {
-      document.getElementById('message').textContent = 'Este módulo está deshabilitado.';
-    }
+    updateLiveInfo(); setInterval(updateLiveInfo,60000);
+
+    function submitRequest(){ document.getElementById('message').textContent='Módulo no disponible.'; }
   </script>
 </body>
 </html>
