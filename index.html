@@ -1,146 +1,128 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KQ-105</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 1rem;
+    }
+    .logo {
+      max-width: 300px;
+      display: block;
+      margin: 0 auto 1rem auto;
+    }
+    .programa-info {
+      background-color: #111;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+    #player {
+      width: 100%;
+      height: 400px;
+      margin-bottom: 2rem;
+    }
+    .programacion h2,
+    .request h2 {
+      margin-top: 2rem;
+    }
+    .countdown {
+      margin-top: 0.5rem;
+      color: #ff0;
+      font-weight: bold;
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <!-- Logo -->
-    <img class="logo"
-         src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png"
-         alt="KQ-105 Logo" />
+    <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
 
-    <!-- Información del programa actual -->
     <div class="programa-info">
       <h3 id="programTitle">Cargando...</h3>
       <p id="programDescription">Cargando descripción...</p>
-      <p id="countdownTime" class="countdown">Tiempo restante: Cargando...</p>
+      <p id="countdownTime" class="countdown">Tiempo restante: --:--</p>
     </div>
 
-    <!-- Reproductor Clappr -->
-    <div id="player-container">
-      <div id="player"></div>
-    </div>
+    <div id="player"></div>
 
-    <!-- Programación de Fin de Semana -->
-    <section class="programacion">
-      <h2>🎶 Programación de Fin de Semana</h2>
-      <ul id="weekendSchedule">
-        <!-- Se llenará dinámicamente -->
-      </ul>
-    </section>
+    <script>
+      new Clappr.Player({
+        source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
+        parentId: "#player",
+        autoPlay: true,
+        mute: false
+      });
 
-    <!-- Solicitud -->
-    <div class="request">
-      <h2>📨 Solicita tu Canción - No Disponible</h2>
-      <form onsubmit="event.preventDefault(); submitRequest();">
-        <input type="text" id="songRequest" placeholder="Artista - Canción" />
-        <button type="submit">Solicitar</button>
-      </form>
-      <div id="message"></div>
-    </div>
-  </div>
+      const weekdaySchedule = [
+        { start: 0, end: 6, show: "Videos Musicales", desc: "Disfruta de los mejores videos musicales." },
+        { start: 6, end: 10, show: "KQ Al Aire con Héctor Ortiz", desc: "Las mejores noticias y entretenimiento." },
+        { start: 10, end: 15, show: "KQOnline con Alex Diaz", desc: "Tecnología y cultura con Alex Diaz." },
+        { start: 15, end: 18, show: "La Tendencia de Molusco", desc: "Farándula y entretenimiento." },
+        { start: 18, end: 19, show: "KQ Al Aire con Pedro Villegas", desc: "Canciones y noticias." },
+        { start: 19, end: 24, show: "Videos Musicales", desc: "Sigue disfrutando buena música." }
+      ];
 
-  <script>
-    // Inicializa Clappr
-    new Clappr.Player({
-      source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
-      parentId: "#player",
-      autoPlay: true,
-      mute: false,
-      height: "100%",
-      width: "100%"
-    });
+      const weekendSchedule = {
+        6: [ // Sábado
+          { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", desc: "Los mejores videos musicales." },
+          { start: 19, end: 21, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", desc: "Los 20 éxitos más sonados." },
+          { start: 21, end: 24, show: "Videos Musicales powered by KQ 105", desc: "Más videos musicales." }
+        ],
+        0: [ // Domingo
+          { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", desc: "Los mejores videos musicales." },
+          { start: 18, end: 20, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", desc: "Los 20 éxitos más sonados." },
+          { start: 20, end: 24, show: "Videos Musicales powered by KQ 105", desc: "Más videos musicales." }
+        ]
+      };
 
-    // Horarios entre semana
-    const weekdaySchedule = [
-      { start: 0, end: 6, show: "Videos Musicales Powered by KQ105", description: "Disfruta de los mejores videos musicales de todos los tiempos." },
-      { start: 6, end: 10, show: "KQ Al Aire con Héctor Ortiz", description: "Con Héctor Ortiz, las mejores noticias y entretenimiento." },
-      { start: 10, end: 15, show: "KQOnline con Alex Diaz", description: "Alex Diaz te trae lo último en tecnología y cultura." },
-      { start: 15, end: 18, show: "La Tendencia de Molusco con Ali, Pamela y Robert", description: "Lo mejor de la farándula y el entretenimiento." },
-      { start: 18, end: 19, show: "KQ Al Aire con Pedro Villegas", description: "Pedro Villegas te acompaña con las mejores canciones y noticias." },
-      { start: 19, end: 24, show: "Videos Musicales Powered by KQ105", description: "Continúa disfrutando de los mejores videos musicales." }
-    ];
+      function getCurrentShow() {
+        const now = new Date();
+        const day = now.getDay();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        const timeDecimal = hour + minute / 60;
 
-    // Horarios fin de semana (sábado y domingo)
-    const weekendSchedule = {
-      6: [ // sábado
-        { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." },
-        { start: 19, end: 21, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", description: "Los 20 mejores éxitos de la semana." },
-        { start: 21, end: 24, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." }
-      ],
-      0: [ // domingo
-        { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." },
-        { start: 18, end: 20, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", description: "Los 20 mejores éxitos de la semana." },
-        { start: 20, end: 24, show: "Videos Musicales powered by KQ 105", description: "Disfruta de los mejores videos musicales." }
-      ]
-    };
+        const schedule = (day === 6 || day === 0) ? weekendSchedule[day] : weekdaySchedule;
 
-    function updateLiveAndSchedule() {
-      const now = new Date();
-      const day = now.getDay(); // 0 = domingo, 6 = sábado
-      const time = now.getHours() + now.getMinutes() / 60;
+        let current = schedule[schedule.length - 1]; // default
+        let nextStartHour = null;
 
-      // Selección de programación
-      const schedule = (day === 0 || day === 6)
-        ? weekendSchedule[day]
-        : weekdaySchedule;
-
-      // Encontrar programa actual y siguiente
-      let current = schedule[0], next;
-      for (let i = 0; i < schedule.length; i++) {
-        if (time >= schedule[i].start && time < schedule[i].end) {
-          current = schedule[i];
-          next = schedule[i + 1];
-          break;
+        for (let i = 0; i < schedule.length; i++) {
+          const item = schedule[i];
+          if (timeDecimal >= item.start && timeDecimal < item.end) {
+            current = item;
+            nextStartHour = item.end;
+            break;
+          }
         }
+
+        const endHour = nextStartHour ?? 24;
+        const remainingMs = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour) - now;
+        const remainingMin = Math.floor((remainingMs / 1000) / 60);
+        const hrs = Math.floor(remainingMin / 60);
+        const mins = remainingMin % 60;
+
+        document.getElementById("programTitle").textContent = current.show;
+        document.getElementById("programDescription").textContent = current.desc;
+        document.getElementById("countdownTime").textContent = `Tiempo restante: ${hrs}h ${mins}min`;
       }
 
-      // Actualizar bloque de programa en vivo
-      document.getElementById('programTitle').textContent = current.show;
-      document.getElementById('programDescription').textContent = current.description;
-
-      // Contador de tiempo restante
-      const countdownEl = document.getElementById('countdownTime');
-      if (next) {
-        const diff = Math.max(0, next.start - time);
-        const h = Math.floor(diff), m = Math.floor((diff - h) * 60);
-        countdownEl.textContent = `Tiempo restante: ${h}h ${m}m`;
-      } else {
-        countdownEl.textContent = '';
-      }
-
-      // Llenar lista de fin de semana si aplica
-      if (day === 0 || day === 6) {
-        const listEl = document.getElementById('weekendSchedule');
-        listEl.innerHTML = '';
-        schedule.forEach(slot => {
-          const li = document.createElement('li');
-          li.innerHTML = `<strong>${formatHour(slot.start)} - ${formatHour(slot.end)}:</strong> ${slot.show}`;
-          listEl.appendChild(li);
-        });
-      }
-    }
-
-    function formatHour(h) {
-      // convierte 0-24 a formato hh:mm am/pm si lo necesitas, o deja hh:00
-      const hr = Math.floor(h);
-      const mn = Math.round((h - hr) * 60);
-      const suffix = hr >= 12 ? 'pm' : 'am';
-      const displayHr = ((hr + 11) % 12 + 1);
-      return `${displayHr}:${mn.toString().padStart(2,'0')}${suffix}`;
-    }
-
-    updateLiveAndSchedule();
-    setInterval(updateLiveAndSchedule, 60000);
-
-    function submitRequest() {
-      document.getElementById('message').textContent = 'Módulo no disponible.';
-    }
-  </script>
+      getCurrentShow();
+      setInterval(getCurrentShow, 60000);
+    </script>
+  </div>
 </body>
 </html>
