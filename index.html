@@ -6,123 +6,91 @@
   <title>KQ-105</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background-color: #000;
       color: #fff;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
     }
-    .container {
-      max-width: 900px;
-      margin: auto;
+
+    .programa {
+      background: #111;
       padding: 1rem;
-    }
-    .logo {
-      max-width: 300px;
-      display: block;
-      margin: 0 auto 1rem auto;
-    }
-    .programa-info {
-      background-color: #111;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 10px;
       text-align: center;
     }
-    #player {
-      width: 100%;
-      height: 400px;
-      margin-bottom: 2rem;
-    }
-    .programacion h2,
-    .request h2 {
-      margin-top: 2rem;
-    }
-    .countdown {
-      margin-top: 0.5rem;
-      color: #ff0;
+
+    #countdown {
       font-weight: bold;
+      color: #ff0;
+      margin-top: 0.5rem;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 500px;
+      border: none;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
 
-    <div class="programa-info">
-      <h3 id="programTitle">Cargando...</h3>
-      <p id="programDescription">Cargando descripción...</p>
-      <p id="countdownTime" class="countdown">Tiempo restante: --:--</p>
-    </div>
-
-    <div id="player"></div>
-
-    <script>
-      new Clappr.Player({
-        source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
-        parentId: "#player",
-        autoPlay: true,
-        mute: false
-      });
-
-      const weekdaySchedule = [
-        { start: 0, end: 6, show: "Videos Musicales", desc: "Disfruta de los mejores videos musicales." },
-        { start: 6, end: 10, show: "KQ Al Aire con Héctor Ortiz", desc: "Las mejores noticias y entretenimiento." },
-        { start: 10, end: 15, show: "KQOnline con Alex Diaz", desc: "Tecnología y cultura con Alex Diaz." },
-        { start: 15, end: 18, show: "La Tendencia de Molusco", desc: "Farándula y entretenimiento." },
-        { start: 18, end: 19, show: "KQ Al Aire con Pedro Villegas", desc: "Canciones y noticias." },
-        { start: 19, end: 24, show: "Videos Musicales", desc: "Sigue disfrutando buena música." }
-      ];
-
-      const weekendSchedule = {
-        6: [ // Sábado
-          { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", desc: "Los mejores videos musicales." },
-          { start: 19, end: 21, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", desc: "Los 20 éxitos más sonados." },
-          { start: 21, end: 24, show: "Videos Musicales powered by KQ 105", desc: "Más videos musicales." }
-        ],
-        0: [ // Domingo
-          { start: 0, end: 18, show: "Videos Musicales powered by KQ 105", desc: "Los mejores videos musicales." },
-          { start: 18, end: 20, show: "Top 20 CountDown con Manolo Castro y Dessire Lowry", desc: "Los 20 éxitos más sonados." },
-          { start: 20, end: 24, show: "Videos Musicales powered by KQ 105", desc: "Más videos musicales." }
-        ]
-      };
-
-      function getCurrentShow() {
-        const now = new Date();
-        const day = now.getDay();
-        const hour = now.getHours();
-        const minute = now.getMinutes();
-        const timeDecimal = hour + minute / 60;
-
-        const schedule = (day === 6 || day === 0) ? weekendSchedule[day] : weekdaySchedule;
-
-        let current = schedule[schedule.length - 1]; // default
-        let nextStartHour = null;
-
-        for (let i = 0; i < schedule.length; i++) {
-          const item = schedule[i];
-          if (timeDecimal >= item.start && timeDecimal < item.end) {
-            current = item;
-            nextStartHour = item.end;
-            break;
-          }
-        }
-
-        const endHour = nextStartHour ?? 24;
-        const remainingMs = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour) - now;
-        const remainingMin = Math.floor((remainingMs / 1000) / 60);
-        const hrs = Math.floor(remainingMin / 60);
-        const mins = remainingMin % 60;
-
-        document.getElementById("programTitle").textContent = current.show;
-        document.getElementById("programDescription").textContent = current.desc;
-        document.getElementById("countdownTime").textContent = `Tiempo restante: ${hrs}h ${mins}min`;
-      }
-
-      getCurrentShow();
-      setInterval(getCurrentShow, 60000);
-    </script>
+  <div class="programa">
+    <h2 id="titulo">Cargando programación...</h2>
+    <p id="descripcion">Por favor espera...</p>
+    <div id="countdown">Tiempo restante: --:--</div>
   </div>
+
+  <iframe allowfullscreen="" src="https://stream.crystalkq105.eu.org/kq105.html"></iframe>
+
+  <script>
+    const saturday = [
+      { start: 0, end: 18, title: "Videos Musicales powered by KQ 105" },
+      { start: 19, end: 21, title: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
+      { start: 21, end: 24, title: "Videos Musicales powered by KQ 105" }
+    ];
+
+    const sunday = [
+      { start: 0, end: 18, title: "Videos Musicales powered by KQ 105" },
+      { start: 18, end: 20, title: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
+      { start: 20, end: 24, title: "Videos Musicales powered by KQ 105" }
+    ];
+
+    function getCurrentShow(schedule, hour) {
+      return schedule.find(show => hour >= show.start && hour < show.end);
+    }
+
+    function updateProgram() {
+      const now = new Date();
+      const day = now.getDay(); // 0 = domingo
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+
+      const schedule = day === 0 ? sunday : (day === 6 ? saturday : []);
+      const currentShow = getCurrentShow(schedule, hour);
+
+      if (currentShow) {
+        document.getElementById("titulo").textContent = currentShow.title;
+        document.getElementById("descripcion").textContent = `Actualmente al aire.`;
+
+        const endHour = currentShow.end;
+        const endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour, 0, 0);
+        const diffMs = endTime - now;
+        const diffMin = Math.floor(diffMs / 60000);
+        const hrs = Math.floor(diffMin / 60);
+        const mins = diffMin % 60;
+
+        document.getElementById("countdown").textContent = `Tiempo restante: ${hrs}h ${mins}m`;
+      } else {
+        document.getElementById("titulo").textContent = "Sin programación especial.";
+        document.getElementById("descripcion").textContent = "";
+        document.getElementById("countdown").textContent = "";
+      }
+    }
+
+    updateProgram();
+    setInterval(updateProgram, 60000);
+  </script>
+
 </body>
 </html>
