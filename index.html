@@ -42,7 +42,7 @@
       <p id="timeRemaining"></p>
     </div>
 
-    <!-- Programación semanal -->
+    <!-- Programación completa -->
     <section class="programacion">
       <h2>📻 Programación en la semana</h2>
       <ul>
@@ -126,14 +126,12 @@
 
     changePlayer();
 
-    // Programación en vivo
+    // Programación completa
     const schedule = {
       Sunday: [
-        { start: "00:00", end: "06:00", name: "Videos Musicales" },
-        { start: "06:00", end: "12:00", name: "KQ en la Mañana" },
-        { start: "12:00", end: "18:00", name: "Programación Especial" },
-        { start: "18:00", end: "20:00", name: "Top 20 CountDown" },
-        { start: "20:00", end: "23:59", name: "Videos Musicales" }
+        { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
+        { start: "18:00", end: "20:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
+        { start: "20:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
       ],
       Monday: [
         { start: "00:00", end: "06:00", name: "Videos Musicales Powered by KQ105" },
@@ -143,9 +141,41 @@
         { start: "18:00", end: "19:00", name: "KQ Al Aire con Pedro Villegas" },
         { start: "19:00", end: "23:59", name: "Videos Musicales Powered by KQ105" }
       ],
+      Tuesday: [
+        { start: "00:00", end: "06:00", name: "Videos Musicales Powered by KQ105" },
+        { start: "06:00", end: "10:00", name: "KQ Al Aire con Héctor Ortiz" },
+        { start: "10:00", end: "15:00", name: "KQOnline con Alex Diaz" },
+        { start: "15:00", end: "18:00", name: "La Tendencia de Molusco con Ali, Pamela y Robert" },
+        { start: "18:00", end: "19:00", name: "KQ Al Aire con Pedro Villegas" },
+        { start: "19:00", end: "23:59", name: "Videos Musicales Powered by KQ105" }
+      ],
+      Wednesday: [
+        { start: "00:00", end: "06:00", name: "Videos Musicales Powered by KQ105" },
+        { start: "06:00", end: "10:00", name: "KQ Al Aire con Héctor Ortiz" },
+        { start: "10:00", end: "15:00", name: "KQOnline con Alex Diaz" },
+        { start: "15:00", end: "18:00", name: "La Tendencia de Molusco con Ali, Pamela y Robert" },
+        { start: "18:00", end: "19:00", name: "KQ Al Aire con Pedro Villegas" },
+        { start: "19:00", end: "23:59", name: "Videos Musicales Powered by KQ105" }
+      ],
+      Thursday: [
+        { start: "00:00", end: "06:00", name: "Videos Musicales Powered by KQ105" },
+        { start: "06:00", end: "10:00", name: "KQ Al Aire con Héctor Ortiz" },
+        { start: "10:00", end: "15:00", name: "KQOnline con Alex Diaz" },
+        { start: "15:00", end: "18:00", name: "La Tendencia de Molusco con Ali, Pamela y Robert" },
+        { start: "18:00", end: "19:00", name: "KQ Al Aire con Pedro Villegas" },
+        { start: "19:00", end: "23:59", name: "Videos Musicales Powered by KQ105" }
+      ],
+      Friday: [
+        { start: "00:00", end: "06:00", name: "Videos Musicales Powered by KQ105" },
+        { start: "06:00", end: "10:00", name: "KQ Al Aire con Héctor Ortiz" },
+        { start: "10:00", end: "15:00", name: "KQOnline con Alex Diaz" },
+        { start: "15:00", end: "18:00", name: "La Tendencia de Molusco con Ali, Pamela y Robert" },
+        { start: "18:00", end: "19:00", name: "KQ Al Aire con Pedro Villegas" },
+        { start: "19:00", end: "23:59", name: "Videos Musicales Powered by KQ105" }
+      ],
       Saturday: [
         { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
-        { start: "19:00", end: "21:00", name: "Top 20 CountDown" },
+        { start: "19:00", end: "21:00", name: "Top 20 CountDown con Manolo Castro y Dessire Lowry" },
         { start: "21:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
       ]
     };
