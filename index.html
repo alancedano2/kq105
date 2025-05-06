@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KQ-105 En Vivo y Solicitudes</title>
+  <title>KQ-105 En Vivo</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
@@ -15,7 +15,7 @@
     <!-- Logo -->
     <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
 
-    <!-- Selector -->
+    <!-- Selector de reproductor -->
     <div class="selector">
       <label for="playerType">🎛️ Reproductor:</label>
       <select id="playerType" onchange="changePlayer()">
@@ -30,12 +30,12 @@
       <div id="player"></div>
     </div>
 
-    <!-- Error si el reproductor falla -->
+    <!-- Error si falla -->
     <div id="playerError" style="display:none; color:red; margin-top:10px; font-weight:bold;">
       ⚠️ Este reproductor no está funcionando actualmente.
     </div>
 
-    <!-- En Vivo -->
+    <!-- Programación en vivo -->
     <div class="live-info" id="liveInfo">
       <h2>🔴 EN VIVO AHORA</h2>
       <p id="currentProgram">Cargando programación...</p>
@@ -153,27 +153,32 @@
     function updateLiveProgram() {
       const now = new Date();
       const day = now.toLocaleDateString('en-US', { weekday: 'long' });
-      const time = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-
+      const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
       const todaySchedule = schedule[day] || [];
-      for (let slot of todaySchedule) {
-        if (time >= slot.start && time < slot.end) {
-          const [endH, endM] = slot.end.split(":").map(Number);
-          const end = new Date(now);
-          end.setHours(endH, endM, 0);
-          const remaining = end - now;
-          const mins = Math.floor(remaining / 60000);
-          const hrs = Math.floor(mins / 60);
-          const rest = mins % 60;
+      let currentSlot = null;
 
-          document.getElementById("currentProgram").innerText = slot.name;
-          document.getElementById("timeRemaining").innerText = `Termina en ${hrs}h ${rest}m`;
-          return;
+      for (let slot of todaySchedule) {
+        if (currentTime >= slot.start && currentTime < slot.end) {
+          currentSlot = slot;
+          break;
         }
       }
 
-      document.getElementById("currentProgram").innerText = "Sin programación";
-      document.getElementById("timeRemaining").innerText = "";
+      if (currentSlot) {
+        const [endH, endM] = currentSlot.end.split(":").map(Number);
+        const end = new Date(now);
+        end.setHours(endH, endM, 0, 0);
+        const remaining = end - now;
+        const mins = Math.floor(remaining / 60000);
+        const hrs = Math.floor(mins / 60);
+        const rest = mins % 60;
+
+        document.getElementById("currentProgram").innerText = currentSlot.name;
+        document.getElementById("timeRemaining").innerText = `Termina en ${hrs}h ${rest}m`;
+      } else {
+        document.getElementById("currentProgram").innerText = "Sin programación actual";
+        document.getElementById("timeRemaining").innerText = `Son las ${currentTime}`;
+      }
     }
 
     updateLiveProgram();
