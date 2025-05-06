@@ -23,7 +23,6 @@ body {
   animation: fadeInDown 1s ease both;
 }
 
-/* Contenedor con aspecto 16:9 */
 #player-container {
   width: 100%;
   height: 0;
@@ -32,7 +31,6 @@ body {
   margin-bottom: 30px;
 }
 
-/* Reproductores que se inyectan */
 #player, video, .video-js, iframe {
   position: absolute;
   top: 0;
@@ -54,7 +52,6 @@ body {
   border-radius: 5px;
 }
 
-/* Información en vivo */
 .live-info {
   background: rgba(255, 255, 255, 0.9);
   padding: 20px;
@@ -75,7 +72,6 @@ body {
   font-size: 1.1rem;
 }
 
-/* Programación */
 .programacion {
   background: rgba(255, 255, 255, 0.85);
   padding: 20px;
@@ -98,7 +94,6 @@ body {
   font-weight: bold;
 }
 
-/* Animación */
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
