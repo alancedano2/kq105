@@ -7,20 +7,28 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  flex-direction: column;
-  padding: 20px;
 }
 
 .container {
   text-align: center;
   width: 90%;
-  max-width: 900px;
+  max-width: 1000px;
+  padding: 20px;
 }
 
 .logo {
-  width: 180px;
+  width: 200px;
   margin-bottom: 20px;
   animation: fadeInDown 1s ease both;
+}
+
+.selector {
+  margin-bottom: 20px;
+}
+
+.selector label {
+  font-weight: bold;
+  margin-right: 10px;
 }
 
 #player-container {
@@ -28,70 +36,55 @@ body {
   height: 0;
   padding-bottom: 56.25%;
   position: relative;
-  margin-bottom: 30px;
-}
-
-#player, video, .video-js, iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
-.selector {
   margin-bottom: 20px;
 }
 
-.selector select {
-  padding: 8px;
-  font-size: 1rem;
-  border-radius: 5px;
+#player, #videojs-player, #hls-video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
 .live-info {
-  background: rgba(255, 255, 255, 0.9);
+  background: #fff;
   padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 12px;
   margin-bottom: 20px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
+
 .live-info h2 {
-  margin: 0 0 10px;
-  font-size: 1.5rem;
-  color: #D32F2F;
+  color: red;
+  margin-top: 0;
 }
+
 .live-info p {
   margin: 5px 0;
-  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .programacion {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   padding: 20px;
   border-radius: 12px;
   text-align: left;
   margin-bottom: 20px;
 }
+
 .programacion h2 {
   margin-top: 0;
 }
+
 .programacion ul {
   list-style: none;
   padding: 0;
 }
+
 .programacion li {
   margin-bottom: 10px;
-}
-.programacion .live {
-  color: red;
-  font-weight: bold;
 }
 
 @keyframes fadeInDown {
