@@ -3,21 +3,39 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KQ-105 En Vivo</title>
+  <title>KQ-105 En Vivo y Solicitudes</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
   <style>
     .selector {
-      margin-bottom: 20px;
+      margin: 15px 0;
     }
     .selector select {
       padding: 8px;
-      border-radius: 5px;
       font-size: 1rem;
+      border-radius: 5px;
     }
-    video {
-      width: 100%;
-      height: 100%;
+    .live-info {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .live-info h2 {
+      margin: 0 0 10px;
+      font-size: 1.5rem;
+      color: #D32F2F;
+    }
+    .live-info p {
+      margin: 5px 0;
+      font-size: 1.1rem;
     }
   </style>
 </head>
@@ -26,9 +44,9 @@
     <!-- Logo -->
     <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
 
-    <!-- Selector de reproductor -->
+    <!-- Selector -->
     <div class="selector">
-      <label for="playerType">Selecciona reproductor:</label>
+      <label for="playerType">🎛️ Reproductor:</label>
       <select id="playerType" onchange="changePlayer()">
         <option value="clappr">Clappr</option>
         <option value="videojs">Video.js</option>
@@ -36,7 +54,7 @@
       </select>
     </div>
 
-    <!-- Contenedor del reproductor -->
+    <!-- Reproductor -->
     <div id="player-container">
       <div id="player"></div>
     </div>
@@ -47,14 +65,35 @@
       <p id="currentProgram">Cargando programación...</p>
       <p id="timeRemaining"></p>
     </div>
+
+    <!-- Programación semanal -->
+    <section class="programacion">
+      <h2>📻 Programación en la semana</h2>
+      <ul>
+        <li><strong>12:00am - 6:00am:</strong> Videos Musicales Powered by KQ105</li>
+        <li><strong>6:00am - 10:00am:</strong> KQ Al Aire con Héctor Ortiz</li>
+        <li><strong>10:00am - 3:00pm:</strong> KQOnline con Alex Diaz</li>
+        <li><strong>3:00pm - 6:00pm:</strong> La Tendencia de Molusco con Ali, Pamela y Robert</li>
+        <li><strong>6:00pm - 7:00pm:</strong> KQ Al Aire con Pedro Villegas</li>
+        <li><strong>7:00pm - 12:00am:</strong> Videos Musicales Powered by KQ105</li>
+      </ul>
+    </section>
+
+    <section class="programacion">
+      <h2>🎶 Programación de Fin de Semana</h2>
+      <ul>
+        <li><strong>Sábado:</strong></li>
+        <li><strong>12:00am - 6:00pm:</strong> Videos Musicales powered by KQ 105</li>
+        <li><strong>7:00pm - 9:00pm:</strong> Top 20 CountDown con Manolo Castro y Dessire Lowry</li>
+        <li><strong>9:00pm - 12:00am:</strong> Videos Musicales powered by KQ 105</li>
+        <li><strong>Domingo:</strong></li>
+        <li><strong>12:00am - 6:00pm:</strong> Videos Musicales powered by KQ 105</li>
+        <li><strong>6:00pm - 8:00pm:</strong> Top 20 CountDown con Manolo Castro y Dessire Lowry</li>
+        <li><strong>8:00pm - 12:00am:</strong> Videos Musicales powered by KQ 105</li>
+      </ul>
+    </section>
   </div>
 
-  <!-- Librerías de reproductores -->
-  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
-
-  <!-- Inicializador -->
   <script>
     const streamURL = "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8";
     let currentPlayer = null;
@@ -62,7 +101,7 @@
     function changePlayer() {
       const type = document.getElementById("playerType").value;
       const container = document.getElementById("player");
-      container.innerHTML = ""; // limpiar
+      container.innerHTML = "";
 
       if (type === "clappr") {
         currentPlayer = new Clappr.Player({
@@ -73,17 +112,12 @@
           width: "100%",
           height: "100%"
         });
-      }
-
-      else if (type === "videojs") {
+      } else if (type === "videojs") {
         container.innerHTML = `<video id="videojs-player" class="video-js vjs-default-skin" controls autoplay></video>`;
-        const videoElement = document.getElementById("videojs-player");
-        videojs(videoElement, {
+        videojs("videojs-player", {
           sources: [{ src: streamURL, type: "application/x-mpegURL" }]
         });
-      }
-
-      else if (type === "hlsjs") {
+      } else if (type === "hlsjs") {
         container.innerHTML = `<video id="hls-video" controls autoplay></video>`;
         const video = document.getElementById("hls-video");
         if (Hls.isSupported()) {
@@ -96,11 +130,8 @@
       }
     }
 
-    changePlayer(); // iniciar por defecto con Clappr
-  </script>
+    changePlayer();
 
-  <!-- Programación (misma lógica anterior que ya tienes) -->
-  <script>
     const schedule = {
       Sunday: [
         { start: "00:00", end: "06:00", name: "Videos Musicales" },
@@ -109,22 +140,34 @@
         { start: "18:00", end: "20:00", name: "Top 20 CountDown" },
         { start: "20:00", end: "23:59", name: "Videos Musicales" }
       ],
-      // Agrega el resto de los días aquí si deseas
+      Monday: [
+        { start: "00:00", end: "06:00", name: "Videos Musicales Powered by KQ105" },
+        { start: "06:00", end: "10:00", name: "KQ Al Aire con Héctor Ortiz" },
+        { start: "10:00", end: "15:00", name: "KQOnline con Alex Diaz" },
+        { start: "15:00", end: "18:00", name: "La Tendencia de Molusco con Ali, Pamela y Robert" },
+        { start: "18:00", end: "19:00", name: "KQ Al Aire con Pedro Villegas" },
+        { start: "19:00", end: "23:59", name: "Videos Musicales Powered by KQ105" }
+      ],
+      Saturday: [
+        { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
+        { start: "19:00", end: "21:00", name: "Top 20 CountDown" },
+        { start: "21:00", end: "23:59", name: "Videos Musicales powered by KQ 105" }
+      ]
     };
 
     function updateLiveProgram() {
       const now = new Date();
       const day = now.toLocaleDateString('en-US', { weekday: 'long' });
-      const current = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-      const today = schedule[day] || [];
+      const time = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
 
-      for (let slot of today) {
-        if (current >= slot.start && current < slot.end) {
+      const todaySchedule = schedule[day] || [];
+      for (let slot of todaySchedule) {
+        if (time >= slot.start && time < slot.end) {
           const [endH, endM] = slot.end.split(":").map(Number);
-          const endTime = new Date(now);
-          endTime.setHours(endH, endM, 0);
-          const diffMs = endTime - now;
-          const mins = Math.floor(diffMs / 60000);
+          const end = new Date(now);
+          end.setHours(endH, endM, 0);
+          const remaining = end - now;
+          const mins = Math.floor(remaining / 60000);
           const hrs = Math.floor(mins / 60);
           const rest = mins % 60;
 
@@ -134,7 +177,7 @@
         }
       }
 
-      document.getElementById("currentProgram").innerText = "Sin programación actual.";
+      document.getElementById("currentProgram").innerText = "Sin programación";
       document.getElementById("timeRemaining").innerText = "";
     }
 
