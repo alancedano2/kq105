@@ -48,34 +48,41 @@ body {
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
+/* Cuadro de En Vivo */
 .live-info {
   background: #fff;
   padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border-radius: 16px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.15);
+  text-align: center;
+  animation: fadeInUp 1s ease;
 }
 
 .live-info h2 {
   color: red;
   margin-top: 0;
+  font-size: 1.4rem;
 }
 
 .live-info p {
-  margin: 5px 0;
+  margin: 6px 0;
   font-weight: bold;
+  color: #333;
 }
 
 .programacion {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   padding: 20px;
   border-radius: 12px;
   text-align: left;
   margin-bottom: 20px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
 }
 
 .programacion h2 {
   margin-top: 0;
+  color: #000;
 }
 
 .programacion ul {
@@ -85,9 +92,46 @@ body {
 
 .programacion li {
   margin-bottom: 10px;
+  font-size: 0.95rem;
 }
 
+/* Botón KQ105 */
+.footer-link {
+  margin-top: 30px;
+  text-align: center;
+  animation: fadeUp 1s ease forwards;
+  opacity: 0;
+}
+
+.footer-link a {
+  background-color: #000;
+  color: #FFD700;
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  display: inline-block;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.footer-link a:hover {
+  background-color: #333;
+  transform: scale(1.05);
+}
+
+/* Animaciones */
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
