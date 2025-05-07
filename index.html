@@ -12,10 +12,8 @@
 </head>
 <body>
   <div class="container">
-    <!-- Logo -->
     <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
 
-    <!-- Selector de reproductor -->
     <div class="selector">
       <label for="playerType">🎛️ Reproductor:</label>
       <select id="playerType" onchange="changePlayer()">
@@ -25,24 +23,20 @@
       </select>
     </div>
 
-    <!-- Reproductor -->
     <div id="player-container">
       <div id="player"></div>
     </div>
 
-    <!-- Error si falla -->
     <div id="playerError" style="display:none; color:red; margin-top:10px; font-weight:bold;">
       ⚠️ Este reproductor no está funcionando actualmente.
     </div>
 
-    <!-- Programación en vivo -->
     <div class="live-info" id="liveInfo">
       <h2>🔴 EN VIVO AHORA</h2>
       <p id="currentProgram">Cargando programación...</p>
       <p id="timeRemaining"></p>
     </div>
 
-    <!-- Programación completa -->
     <section class="programacion">
       <h2>📻 Programación en la semana</h2>
       <ul>
@@ -68,6 +62,11 @@
         <li><strong>8:00pm - 12:00am:</strong> Videos Musicales powered by KQ 105</li>
       </ul>
     </section>
+
+    <!-- Botón animado de redirección -->
+    <div class="footer-link animated-fade">
+      <a href="https://kq105.com" target="_blank">🔗 Visita KQ105.com</a>
+    </div>
   </div>
 
   <script>
@@ -126,7 +125,6 @@
 
     changePlayer();
 
-    // Programación completa
     const schedule = {
       Sunday: [
         { start: "00:00", end: "18:00", name: "Videos Musicales powered by KQ 105" },
