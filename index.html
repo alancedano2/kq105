@@ -1,102 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KQ105 - Reproductor y Playlist</title>
+  <title>KQ105 - En Vivo</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 </head>
 <body>
   <div class="main-layout">
     <div class="video-section">
+      <div class="live-box" id="liveBox">🔴 Cargando programación...</div>
+
       <div id="player"></div>
+
+      <div class="programacion">
+        <h2>📻 Programación Semanal</h2>
+        <ul>
+          <li><strong>12:00am - 6:00am:</strong> Videos Musicales Powered by KQ105</li>
+          <li><strong>6:00am - 10:00am:</strong> KQ Al Aire con Héctor Ortiz</li>
+          <li><strong>10:00am - 3:00pm:</strong> KQOnline con Alex Diaz</li>
+          <li><strong>3:00pm - 6:00pm:</strong> La Tendencia de Molusco con Ali, Pamela y Robert</li>
+          <li><strong>6:00pm - 7:00pm:</strong> KQ Al Aire con Pedro Villegas</li>
+          <li><strong>7:00pm - 12:00am:</strong> Videos Musicales Powered by KQ105</li>
+        </ul>
+        <h3>🎶 Fin de Semana</h3>
+        <ul>
+          <li><strong>Sábado 12:00am - 6:00pm:</strong> Videos Musicales powered by KQ 105</li>
+          <li><strong>Sábado 7:00pm - 9:00pm:</strong> Top 20 Countdown con Manolo Castro y Dessire Lowry</li>
+          <li><strong>Sábado 9:00pm - 12:00am:</strong> Videos Musicales powered by KQ 105</li>
+          <li><strong>Domingo 12:00am - 6:00pm:</strong> Videos Musicales powered by KQ 105</li>
+          <li><strong>Domingo 6:00pm - 8:00pm:</strong> Top 20 Countdown con Manolo Castro y Dessire Lowry</li>
+          <li><strong>Domingo 8:00pm - 12:00am:</strong> Videos Musicales powered by KQ 105</li>
+        </ul>
+      </div>
     </div>
+
     <div class="playlist-section">
       <h2>🎵 Lista de Canciones</h2>
       <div class="scroll-box">
-  <div class="cancion-box">Alex Diaz, Girellys - El Vive en Ti</div>
-  <div class="cancion-box">Alleh & Yorghaki - capaz (merengueton) (visualizer)</div>
-  <div class="cancion-box">Aventura - Por Un Segundo</div>
-  <div class="cancion-box">BAD BUNNY - BAILE INoLVIDABLE</div>
-  <div class="cancion-box">Baby Rasta y Gringo, Farruko - Hasta Volver a Intentar Remix (Video Oficial)</div>
-  <div class="cancion-box">Bad Bunny - DtMF (Video Lyrics)</div>
-  <div class="cancion-box">Bad Bunny - NUEVAYoL (Video Lyrics)</div>
-  <div class="cancion-box">Billie Eilish - BIRDS OF A FEATHER (Official Lyric Video)</div>
-  <div class="cancion-box">Bruno Mars - Treasure (Official Music Video)</div>
-  <div class="cancion-box">Camilo, Camila Cabello - Ambulancia (Visualizer)</div>
-  <div class="cancion-box">Chayanne - Bailando Bachata (Official Video)</div>
-  <div class="cancion-box">Chyno & Nacho - Tu Nombre (Video Oficial)</div>
-  <div class="cancion-box">Cyndi Lauper - Girls Just Want To Have Fun (Official Video)</div>
-  <div class="cancion-box">Daddy Yankee -  Lo que Pas¢ Pas¢ (Audio Oficial)</div>
-  <div class="cancion-box">Danny Ocean - Ley universal</div>
-  <div class="cancion-box">Darell - Lollipop (Official Video)</div>
-  <div class="cancion-box">David Guetta & Willy William & Nicky Jam - Cuentale (Official Video)</div>
-  <div class="cancion-box">David Guetta - Titanium ft. Sia (Official Video)</div>
-  <div class="cancion-box">DE LA GHETTO (GZ) - LOCO (OFFICIAL MUSIC VIDEO)</div>
-  <div class="cancion-box">Doechii - Anxiety (Official Video)</div>
-  <div class="cancion-box">Eladio Carri¢n - TQMQA (Video Oficial</div>
-  <div class="cancion-box">Elvis Crespo, Jerry Rivera -  Nuestra Cancion (VIDEO OFICIAL)</div>
-  <div class="cancion-box">Emilia - noviogangsta (Official Video)</div>
-  <div class="cancion-box">Farruko X Makaco "El Cerebro" - Abatido (Official Video)</div>
-  <div class="cancion-box">Farruko, Madiel Lara - Tiempos Buenos (Official Music Video)</div>
-  <div class="cancion-box">Feid, Ty Dolla $ign - DALLAX (Official Video)</div>
-  <div class="cancion-box">Frankie Ruiz - Desnudate Mujer (Video Oficial)</div>
-  <div class="cancion-box">Gloria Estefan - Raíces (Official Video)</div>
-  <div class="cancion-box">Grupo Frontera_ Tiny Desk Concert</div>
-  <div class="cancion-box">Ivy Queen - Casi Casi (La Reina del Reggaetón - Video Oficial)</div>
-  <div class="cancion-box">Jay Wheeler - Una Como Tú</div>
-  <div class="cancion-box">Jerry Rivera - Pa' Eso Es La Vida</div>
-  <div class="cancion-box">Jerry Rivera - Volver a Enamorarnos</div>
-  <div class="cancion-box">Justin Quiles, Chimbala, Zion & Lennox - Loco</div>
-  <div class="cancion-box">Kany García, Rawayana - La Culpa</div>
-  <div class="cancion-box">KAROL G - Si Antes Te Hubiera Conocido</div>
-  <div class="cancion-box">KQ-Online con Alex Diaz</div>
-  <div class="cancion-box">Lady Gaga, Bruno Mars - Die With A Smile</div>
-  <div class="cancion-box">Lenny Tavárez, Prince Royce - TU FEO</div>
-  <div class="cancion-box">LOMIIEL - PA' QUE LO BAILES</div>
-  <div class="cancion-box">LUIS ENRIQUE - Yo No Sé Mañana</div>
-  <div class="cancion-box">Luis Figueroa - Más Que Un Beso</div>
-  <div class="cancion-box">Luis Vazquez - Peligro</div>
-  <div class="cancion-box">Luna - Wisin, Kapo</div>
-  <div class="cancion-box">Maluma - Cosas Pendientes</div>
-  <div class="cancion-box">Marc Anthony - Parecen Viernes</div>
-  <div class="cancion-box">Marc Anthony - Punta Cana</div>
-  <div class="cancion-box">Myke Towers - LA FALDA</div>
-  <div class="cancion-box">Myke Towers, Bad Bunny - ADIVINO</div>
-  <div class="cancion-box">Natti Natasha - Escasez De Besos</div>
-  <div class="cancion-box">Nicky Jam - Insomnio</div>
-  <div class="cancion-box">Nio Garcia - No Vidente</div>
-  <div class="cancion-box">Olga Tañón & Christian Alicea - Vamos A Ser Feliz</div>
-  <div class="cancion-box">Ozuna - Tiny Desk (Home) Concert</div>
-  <div class="cancion-box">Ozuna x Kapo - Más Que Tú</div>
-  <div class="cancion-box">Pedro Capó - La Fiesta</div>
-  <div class="cancion-box">Pedro Capó - Sabe Bien</div>
-  <div class="cancion-box">Piso 21, Marc Anthony, Beéle - Volver</div>
-  <div class="cancion-box">Pitbull - Give Me Everything</div>
-  <div class="cancion-box">Prince Royce - How Deep Is Your Love</div>
-  <div class="cancion-box">Rauw Alejandro - Carita Linda</div>
-  <div class="cancion-box">Rauw Alejandro, Romeo Santos - Khe?</div>
-  <div class="cancion-box">Rema, Selena Gomez - Calm Down</div>
-  <div class="cancion-box">Rihanna - Only Girl (In The World)</div>
-  <div class="cancion-box">ROSALÍA - DESPECHÁ</div>
-  <div class="cancion-box">ROSÉ & Bruno Mars - APT.</div>
-  <div class="cancion-box">Sean Paul - Temperature</div>
-  <div class="cancion-box">Sebastián Yatra, Manuel Turizo, Beéle - VAGABUNDO</div>
-  <div class="cancion-box">Sech - Picasso</div>
-  <div class="cancion-box">Shakira - Hips Don't Lie</div>
-  <div class="cancion-box">Shakira - Soltera</div>
-  <div class="cancion-box">The Weeknd & Ariana Grande - Save Your Tears (Remix)</div>
-  <div class="cancion-box">The Weeknd - I Feel It Coming</div>
-  <div class="cancion-box">UWAIE - Kapo</div>
-  <div class="cancion-box">Víctor Manuelle - Si Volviera Jesús</div>
-  <div class="cancion-box">Wisin & Yandel - Recordar</div>
-  <div class="cancion-box">Wisin, Camilo, Los Legendarios - Buenos Días</div>
-  <div class="cancion-box">Wisin, Jhayco, Ozuna - Emojis de Corazones</div>
-  <div class="cancion-box">Xavi, Manuel Turizo - En Privado</div>
-  <div class="cancion-box">Yami Safdie, Camilo - Querida Yo</div>
-  <div class="cancion-box">Yandel - Nunca Me Olvides</div>
-  <div class="cancion-box">Zhamira Zambrano & Jay Wheeler - Extrañándote</div>
+        <!-- Lista de canciones -->
+        <div class="cancion-box">Alex Diaz, Girellys - El Vive en Ti</div>
+        <div class="cancion-box">Alleh & Yorghaki - capaz (merengueton) (visualizer)</div>
+        <div class="cancion-box">Baby Rasta y Gringo, Farruko - Hasta Volver a Intentar Remix</div>
+        <div class="cancion-box">Bad Bunny - DtMF</div>
+        <div class="cancion-box">Bad Bunny - NUEVAYoL</div>
+        <div class="cancion-box">Billie Eilish - BIRDS OF A FEATHER</div>
+        <div class="cancion-box">Bruno Mars - Treasure</div>
+        <div class="cancion-box">Camilo, Camila Cabello - Ambulancia</div>
+        <div class="cancion-box">Chayanne - Bailando Bachata</div>
+        <div class="cancion-box">Daddy Yankee - Lo que Pasó Pasó</div>
+        <div class="cancion-box">David Guetta - Titanium ft. Sia</div>
+        <div class="cancion-box">Eladio Carrión - TQMQA</div>
+        <div class="cancion-box">Elvis Crespo, Jerry Rivera - Nuestra Canción</div>
+        <div class="cancion-box">Farruko, Madiel Lara - Tiempos Buenos</div>
+        <div class="cancion-box">Feid, Ty Dolla $ign - DALLAX</div>
+        <div class="cancion-box">Frankie Ruiz - Desnúdate Mujer</div>
+        <div class="cancion-box">Jay Wheeler - Una Como Tú</div>
+        <div class="cancion-box">Jerry Rivera - Volver a Enamorarnos</div>
+        <div class="cancion-box">Kany García, Rawayana - La Culpa</div>
+        <div class="cancion-box">KAROL G - Si Antes Te Hubiera Conocido</div>
+        <div class="cancion-box">Maluma - Cosas Pendientes</div>
+        <div class="cancion-box">Marc Anthony - Parecen Viernes</div>
+        <div class="cancion-box">Myke Towers - LA FALDA</div>
+        <div class="cancion-box">Natti Natasha - Escasez De Besos</div>
+        <div class="cancion-box">Nicky Jam - Insomnio</div>
+        <div class="cancion-box">Olga Tañón & Christian Alicea - Vamos A Ser Feliz</div>
+        <div class="cancion-box">Ozuna x Kapo - Más Que Tú</div>
+        <div class="cancion-box">Pedro Capó - La Fiesta</div>
+        <div class="cancion-box">Pitbull - Give Me Everything</div>
+        <div class="cancion-box">Rauw Alejandro - Carita Linda</div>
+        <div class="cancion-box">ROSALÍA - DESPECHÁ</div>
+        <div class="cancion-box">Sean Paul - Temperature</div>
+        <div class="cancion-box">Shakira - Hips Don't Lie</div>
+        <div class="cancion-box">Shakira - Soltera</div>
+        <div class="cancion-box">The Weeknd - I Feel It Coming</div>
+        <div class="cancion-box">Victor Manuelle - Si Volviera Jesús</div>
+        <div class="cancion-box">Xavi, Manuel Turizo - En Privado</div>
+        <div class="cancion-box">Zhamira Zambrano & Jay Wheeler - Extrañándote</div>
       </div>
     </div>
   </div>
@@ -106,10 +87,56 @@
       source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
       parentId: "#player",
       autoPlay: true,
-      height: "100%",
+      mute: false,
       width: "100%",
-      mute: false
+      height: "100%"
     });
+
+    function actualizarEnVivo() {
+      const ahora = new Date();
+      const hora = ahora.getHours();
+      const minuto = ahora.getMinutes();
+      const dia = ahora.getDay();
+      const horaDecimal = hora + minuto / 60;
+
+      let bloque = [];
+      if (dia === 6) {
+        bloque = [
+          { inicio: 0, fin: 18, nombre: "Videos Musicales" },
+          { inicio: 19, fin: 21, nombre: "Top 20 Countdown con Manolo y Dessire" },
+          { inicio: 21, fin: 24, nombre: "Videos Musicales" }
+        ];
+      } else if (dia === 0) {
+        bloque = [
+          { inicio: 0, fin: 18, nombre: "Videos Musicales" },
+          { inicio: 18, fin: 20, nombre: "Top 20 Countdown con Manolo y Dessire" },
+          { inicio: 20, fin: 24, nombre: "Videos Musicales" }
+        ];
+      } else {
+        bloque = [
+          { inicio: 0, fin: 6, nombre: "Videos Musicales" },
+          { inicio: 6, fin: 10, nombre: "KQ Al Aire con Héctor Ortiz" },
+          { inicio: 10, fin: 15, nombre: "KQOnline con Alex Diaz" },
+          { inicio: 15, fin: 18, nombre: "La Tendencia de Molusco" },
+          { inicio: 18, fin: 19, nombre: "KQ Al Aire con Pedro Villegas" },
+          { inicio: 19, fin: 24, nombre: "Videos Musicales" }
+        ];
+      }
+
+      let actual = "Sin programación actual";
+      for (let prog of bloque) {
+        if (horaDecimal >= prog.inicio && horaDecimal < prog.fin) {
+          const minutosRest = Math.floor((prog.fin - horaDecimal) * 60);
+          actual = `🔴 EN VIVO AHORA: ${prog.nombre} (termina en ${minutosRest} min)`;
+          break;
+        }
+      }
+
+      document.getElementById("liveBox").textContent = actual;
+    }
+
+    actualizarEnVivo();
+    setInterval(actualizarEnVivo, 60000);
   </script>
 </body>
 </html>
