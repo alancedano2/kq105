@@ -1,166 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KQ-105 En Vivo</title>
+  <title>KQ105 - Reproductor y Playlist</title>
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <img class="logo" src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 Logo" />
-
-    <div class="selector">
-      <label for="playerType">🎛️ Reproductor:</label>
-      <select id="playerType" onchange="changePlayer()">
-        <option value="clappr">Clappr</option>
-        <option value="videojs">Video.js</option>
-        <option value="hlsjs">HLS.js</option>
-      </select>
+  <div class="main-layout">
+    <div class="video-section">
+      <div id="player"></div>
     </div>
-
-    <div class="player-and-list">
-      <div id="player-container">
-        <div id="player"></div>
+    <div class="playlist-section">
+      <h2>🎵 Lista de Canciones</h2>
+      <div class="scroll-box">
+  <div class="cancion-box">Alex Diaz, Girellys - El Vive en Ti</div>
+  <div class="cancion-box">Alleh & Yorghaki - capaz (merengueton) (visualizer)</div>
+  <div class="cancion-box">Aventura - Por Un Segundo</div>
+  <div class="cancion-box">BAD BUNNY - BAILE INoLVIDABLE</div>
+  <div class="cancion-box">Baby Rasta y Gringo, Farruko - Hasta Volver a Intentar Remix (Video Oficial)</div>
+  <div class="cancion-box">Bad Bunny - DtMF (Video Lyrics)</div>
+  <div class="cancion-box">Bad Bunny - NUEVAYoL (Video Lyrics)</div>
+  <div class="cancion-box">Billie Eilish - BIRDS OF A FEATHER (Official Lyric Video)</div>
+  <div class="cancion-box">Bruno Mars - Treasure (Official Music Video)</div>
+  <div class="cancion-box">Camilo, Camila Cabello - Ambulancia (Visualizer)</div>
+  <div class="cancion-box">Chayanne - Bailando Bachata (Official Video)</div>
+  <div class="cancion-box">Chyno & Nacho - Tu Nombre (Video Oficial)</div>
+  <div class="cancion-box">Cyndi Lauper - Girls Just Want To Have Fun (Official Video)</div>
+  <div class="cancion-box">Daddy Yankee -  Lo que Pas¢ Pas¢ (Audio Oficial)</div>
+  <div class="cancion-box">Danny Ocean - Ley universal</div>
+  <div class="cancion-box">Darell - Lollipop (Official Video)</div>
+  <div class="cancion-box">David Guetta & Willy William & Nicky Jam - Cuentale (Official Video)</div>
+  <div class="cancion-box">David Guetta - Titanium ft. Sia (Official Video)</div>
+  <div class="cancion-box">DE LA GHETTO (GZ) - LOCO (OFFICIAL MUSIC VIDEO)</div>
+  <div class="cancion-box">Doechii - Anxiety (Official Video)</div>
+  <div class="cancion-box">Eladio Carri¢n - TQMQA (Video Oficial</div>
+  <div class="cancion-box">Elvis Crespo, Jerry Rivera -  Nuestra Cancion (VIDEO OFICIAL)</div>
+  <div class="cancion-box">Emilia - noviogangsta (Official Video)</div>
+  <div class="cancion-box">Farruko X Makaco "El Cerebro" - Abatido (Official Video)</div>
+  <div class="cancion-box">Farruko, Madiel Lara - Tiempos Buenos (Official Music Video)</div>
+  <div class="cancion-box">Feid, Ty Dolla $ign - DALLAX (Official Video)</div>
+  <div class="cancion-box">Frankie Ruiz - Desnudate Mujer (Video Oficial)</div>
+  <div class="cancion-box">Gloria Estefan - Raíces (Official Video)</div>
+  <div class="cancion-box">Grupo Frontera_ Tiny Desk Concert</div>
+  <div class="cancion-box">Ivy Queen - Casi Casi (La Reina del Reggaetón - Video Oficial)</div>
+  <div class="cancion-box">Jay Wheeler - Una Como Tú</div>
+  <div class="cancion-box">Jerry Rivera - Pa' Eso Es La Vida</div>
+  <div class="cancion-box">Jerry Rivera - Volver a Enamorarnos</div>
+  <div class="cancion-box">Justin Quiles, Chimbala, Zion & Lennox - Loco</div>
+  <div class="cancion-box">Kany García, Rawayana - La Culpa</div>
+  <div class="cancion-box">KAROL G - Si Antes Te Hubiera Conocido</div>
+  <div class="cancion-box">KQ-Online con Alex Diaz</div>
+  <div class="cancion-box">Lady Gaga, Bruno Mars - Die With A Smile</div>
+  <div class="cancion-box">Lenny Tavárez, Prince Royce - TU FEO</div>
+  <div class="cancion-box">LOMIIEL - PA' QUE LO BAILES</div>
+  <div class="cancion-box">LUIS ENRIQUE - Yo No Sé Mañana</div>
+  <div class="cancion-box">Luis Figueroa - Más Que Un Beso</div>
+  <div class="cancion-box">Luis Vazquez - Peligro</div>
+  <div class="cancion-box">Luna - Wisin, Kapo</div>
+  <div class="cancion-box">Maluma - Cosas Pendientes</div>
+  <div class="cancion-box">Marc Anthony - Parecen Viernes</div>
+  <div class="cancion-box">Marc Anthony - Punta Cana</div>
+  <div class="cancion-box">Myke Towers - LA FALDA</div>
+  <div class="cancion-box">Myke Towers, Bad Bunny - ADIVINO</div>
+  <div class="cancion-box">Natti Natasha - Escasez De Besos</div>
+  <div class="cancion-box">Nicky Jam - Insomnio</div>
+  <div class="cancion-box">Nio Garcia - No Vidente</div>
+  <div class="cancion-box">Olga Tañón & Christian Alicea - Vamos A Ser Feliz</div>
+  <div class="cancion-box">Ozuna - Tiny Desk (Home) Concert</div>
+  <div class="cancion-box">Ozuna x Kapo - Más Que Tú</div>
+  <div class="cancion-box">Pedro Capó - La Fiesta</div>
+  <div class="cancion-box">Pedro Capó - Sabe Bien</div>
+  <div class="cancion-box">Piso 21, Marc Anthony, Beéle - Volver</div>
+  <div class="cancion-box">Pitbull - Give Me Everything</div>
+  <div class="cancion-box">Prince Royce - How Deep Is Your Love</div>
+  <div class="cancion-box">Rauw Alejandro - Carita Linda</div>
+  <div class="cancion-box">Rauw Alejandro, Romeo Santos - Khe?</div>
+  <div class="cancion-box">Rema, Selena Gomez - Calm Down</div>
+  <div class="cancion-box">Rihanna - Only Girl (In The World)</div>
+  <div class="cancion-box">ROSALÍA - DESPECHÁ</div>
+  <div class="cancion-box">ROSÉ & Bruno Mars - APT.</div>
+  <div class="cancion-box">Sean Paul - Temperature</div>
+  <div class="cancion-box">Sebastián Yatra, Manuel Turizo, Beéle - VAGABUNDO</div>
+  <div class="cancion-box">Sech - Picasso</div>
+  <div class="cancion-box">Shakira - Hips Don't Lie</div>
+  <div class="cancion-box">Shakira - Soltera</div>
+  <div class="cancion-box">The Weeknd & Ariana Grande - Save Your Tears (Remix)</div>
+  <div class="cancion-box">The Weeknd - I Feel It Coming</div>
+  <div class="cancion-box">UWAIE - Kapo</div>
+  <div class="cancion-box">Víctor Manuelle - Si Volviera Jesús</div>
+  <div class="cancion-box">Wisin & Yandel - Recordar</div>
+  <div class="cancion-box">Wisin, Camilo, Los Legendarios - Buenos Días</div>
+  <div class="cancion-box">Wisin, Jhayco, Ozuna - Emojis de Corazones</div>
+  <div class="cancion-box">Xavi, Manuel Turizo - En Privado</div>
+  <div class="cancion-box">Yami Safdie, Camilo - Querida Yo</div>
+  <div class="cancion-box">Yandel - Nunca Me Olvides</div>
+  <div class="cancion-box">Zhamira Zambrano & Jay Wheeler - Extrañándote</div>
       </div>
-
-      <div class="song-list">
-        <h3>🎵 Canciones en la lista</h3>
-        <div class="scroll-box">
-          <ul id="songList">
-  <li>Alex Diaz, Girellys - El Vive en Ti</li>
-  <li>Alleh & Yorghaki - capaz (merengueton) (visualizer)</li>
-  <li>Baby Rasta y Gringo, Farruko - Hasta Volver a Intentar Remix (Video Oficial)</li>
-  <li>Bad Bunny - DtMF (Video Lyrics)</li>
-  <li>Bad Bunny - NUEVAYoL (Video Lyrics)</li>
-  <li>Billie Eilish - BIRDS OF A FEATHER (Official Lyric Video)</li>
-  <li>Bruno Mars - Treasure (Official Music Video)</li>
-  <li>Camilo, Camila Cabello - Ambulancia (Visualizer)</li>
-  <li>Chayanne - Bailando Bachata (Official Video)</li>
-  <li>Chyno & Nacho - Tu Nombre (Video Oficial)</li>
-  <li>Cyndi Lauper - Girls Just Want To Have Fun (Official Video)</li>
-  <li>Daddy Yankee -  Lo que Pas¢ Pas¢ (Audio Oficial)</li>
-  <li>Darell - Lollipop (Official Video)</li>
-  <li>David Guetta - Titanium ft. Sia (Official Video)</li>
-  <li>DE LA GHETTO (GZ) - LOCO (OFFICIAL MUSIC VIDEO)</li>
-  <li>Doechii - Anxiety (Official Video)</li>
-  <li>Eladio Carri¢n - TQMQA (Video Oficial</li>
-  <li>Elvis Crespo, Jerry Rivera -  Nuestra Cancion (VIDEO OFICIAL)</li>
-  <li>Emilia - noviogangsta (Official Video)</li>
-  <li>Farruko X Makaco "El Cerebro" - Abatido (Official Video)</li>
-  <li>Farruko, Madiel Lara - Tiempos Buenos (Official Music Video)</li>
-  <li>Feid, Ty Dolla $ign - DALLAX (Official Video)</li>
-  <li>Frankie Ruiz - Desnudate Mujer (Video Oficial)</li>
-  <li>Gloria Estefan - Raíces (Official Video)</li>
-  <li>Grupo Frontera_ Tiny Desk Concert</li>
-  <li>Ivy Queen - Casi Casi (La Reina del Reggaetón - Video Oficial)</li>
-  <li>Jay Wheeler - Una Como Tú</li>
-  <li>Jerry Rivera - Pa' Eso Es La Vida</li>
-  <li>Jerry Rivera - Volver a Enamorarnos</li>
-  <li>Justin Quiles, Chimbala, Zion & Lennox - Loco</li>
-  <li>Kany García, Rawayana - La Culpa</li>
-  <li>KAROL G - Si Antes Te Hubiera Conocido</li>
-  <li>Lady Gaga, Bruno Mars - Die With A Smile</li>
-  <li>Lenny Tavárez, Prince Royce - TU FEO</li>
-  <li>LUIS ENRIQUE - Yo No Sé Mañana</li>
-  <li>Luis Figueroa - Más Que Un Beso</li>
-  <li>Luis Vazquez - Peligro</li>
-  <li>Luna - Wisin, Kapo</li>
-  <li>Maluma - Cosas Pendientes</li>
-  <li>Marc Anthony - Parecen Viernes</li>
-  <li>Marc Anthony - Punta Cana</li>
-  <li>Myke Towers - LA FALDA</li>
-  <li>Myke Towers, Bad Bunny - ADIVINO</li>
-  <li>Natti Natasha - Escasez De Besos</li>
-  <li>Nicky Jam - Insomnio</li>
-  <li>Nio Garcia - No Vidente</li>
-  <li>Olga Tañón & Christian Alicea - Vamos A Ser Feliz</li>
-  <li>Ozuna - Tiny Desk (Home) Concert</li>
-  <li>Ozuna x Kapo - Más Que Tú</li>
-  <li>Pedro Capó - La Fiesta</li>
-  <li>Pedro Capó - Sabe Bien</li>
-  <li>Piso 21, Marc Anthony, Beéle - Volver</li>
-  <li>Pitbull - Give Me Everything</li>
-  <li>Prince Royce - How Deep Is Your Love</li>
-  <li>Rauw Alejandro - Carita Linda</li>
-  <li>Rauw Alejandro, Romeo Santos - Khe?</li>
-  <li>Rema, Selena Gomez - Calm Down</li>
-  <li>Rihanna - Only Girl (In The World)</li>
-  <li>ROSALÍA - DESPECHÁ</li>
-  <li>ROSÉ & Bruno Mars - APT.</li>
-  <li>Sean Paul - Temperature</li>
-  <li>Sebastián Yatra, Manuel Turizo, Beéle - VAGABUNDO</li>
-  <li>Sech - Picasso</li>
-  <li>Shakira - Hips Don't Lie</li>
-  <li>Shakira - Soltera</li>
-  <li>The Weeknd & Ariana Grande - Save Your Tears (Remix)</li>
-  <li>The Weeknd - I Feel It Coming</li>
-  <li>UWAIE - Kapo</li>
-  <li>Víctor Manuelle - Si Volviera Jesús</li>
-  <li>Wisin & Yandel - Recordar</li>
-  <li>Wisin, Camilo, Los Legendarios - Buenos Días</li>
-  <li>Wisin, Jhayco, Ozuna - Emojis de Corazones</li>
-  <li>Xavi, Manuel Turizo - En Privado</li>
-  <li>Yami Safdie, Camilo - Querida Yo</li>
-  <li>Yandel - Nunca Me Olvides</li>
-  <li>Zhamira Zambrano & Jay Wheeler - Extrañándote</li>
-  <li>Aventura - Por Un Segundo</li>
-  <li>BAD BUNNY - BAILE INoLVIDABLE</li>
-  <li>Danny Ocean - Ley universal</li>
-  <li>David Guetta, Willy William, Nicky Jam - Cuéntale</li>
-  <li>LOMIIEL - PA' QUE LO BAILES</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-link animated-fade">
-      <a href="https://kq105.com" target="_blank">🔗 Visita KQ105.com</a>
     </div>
   </div>
 
   <script>
-    const streamURL = "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8";
-
-    function changePlayer() {
-      const type = document.getElementById("playerType").value;
-      const container = document.getElementById("player");
-      container.innerHTML = "";
-
-      if (type === "clappr") {
-        new Clappr.Player({
-          source: streamURL,
-          parentId: "#player",
-          autoPlay: true,
-          mute: false,
-          width: "100%",
-          height: "100%"
-        });
-      } else if (type === "videojs") {
-        container.innerHTML = `<video id="videojs-player" class="video-js vjs-default-skin" controls autoplay></video>`;
-        videojs("videojs-player", {
-          sources: [{ src: streamURL, type: "application/x-mpegURL" }]
-        });
-      } else if (type === "hlsjs") {
-        container.innerHTML = `<video id="hls-video" controls autoplay></video>`;
-        const video = document.getElementById("hls-video");
-        if (Hls.isSupported()) {
-          const hls = new Hls();
-          hls.loadSource(streamURL);
-          hls.attachMedia(video);
-        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-          video.src = streamURL;
-        } else {
-          container.innerHTML = "⚠️ Este reproductor no es compatible con tu navegador.";
-        }
-      }
-    }
-
-    changePlayer();
+    new Clappr.Player({
+      source: "https://ssh101stream.ssh101.com/akamaissh101/ssh101/kq105/playlist.m3u8",
+      parentId: "#player",
+      autoPlay: true,
+      height: "100%",
+      width: "100%",
+      mute: false
+    });
   </script>
 </body>
 </html>
