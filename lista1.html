@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista 1</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="player-page">
+    <header class="topbar">
+      <a href="index.html" class="back">← Volver</a>
+      <div class="brand"><img src="logo.png" alt="Logo"></div>
+      <span class="top-title">LISTA 1</span>
+    </header>
+
+    <section class="player-layout">
+      <div class="player-panel">
+        <div class="now-label">REPRODUCIENDO</div>
+        <div class="cover">
+          <img src="logo.png" alt="">
+        </div>
+        <div class="now-info">
+          <span id="track-status">LISTA 1</span>
+          <h1 id="now-title">Cargando lista...</h1>
+        </div>
+        <audio id="audio" controls preload="metadata"></audio>
+        <div class="player-actions">
+          <button id="prevBtn" type="button">Anterior</button>
+          <button id="nextBtn" type="button">Siguiente</button>
+        </div>
+        <p class="hint">Los archivos de audio deben estar en <code>musica/lista1/</code> y llamarse 01.mp3, 02.mp3, etc.</p>
+      </div>
+
+      <aside class="queue-panel">
+        <div class="queue-header">
+          <div>
+            <span class="now-label">COLA</span>
+            <h2>Canciones</h2>
+          </div>
+          <span id="count">0</span>
+        </div>
+        <div id="queue" class="queue"></div>
+      </aside>
+    </section>
+  </main>
+  <script src="js/player.js" data-list="lista1"></script>
+</body>
+</html>
