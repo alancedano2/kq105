@@ -41,26 +41,30 @@
           REPRODUCIENDO
         </div>
 
+
         <div class="cover">
-          <img src="logo.png" alt="Lista 1">
+
+          <img
+            src="logo.png"
+            alt="Lista 1">
+
         </div>
+
 
         <div class="now-info">
 
-          <span id="track-status">
+          <span>
             LISTA 1
           </span>
 
           <h1>
-            Lista 1
-          </h1>
-
-          <p>
             KQ105 Final #1
-          </p>
+          </h1>
 
         </div>
 
+
+        <!-- WAV -->
 
         <audio
           id="audio"
@@ -69,10 +73,15 @@
           src="https://analog-metallic-steal-itunes.trycloudflare.com/KQ105%20Final%20%231.wav">
         </audio>
 
+
+        <p class="hint">
+          Reproduce la lista completa de KQ105.
+        </p>
+
       </div>
 
 
-      <!-- CUADRO DE LA LISTA -->
+      <!-- LISTA TXT -->
 
       <aside class="queue-panel">
 
@@ -91,14 +100,18 @@
           </div>
 
           <span id="count">
-            —
+            0
           </span>
 
         </div>
 
 
         <div id="queue" class="queue">
-          Cargando lista...
+
+          <div class="empty">
+            Cargando lista...
+          </div>
+
         </div>
 
       </aside>
@@ -110,6 +123,10 @@
 
 
   <script>
+
+    const queue = document.getElementById("queue");
+    const count = document.getElementById("count");
+
 
     fetch("lista1.txt")
 
@@ -125,43 +142,55 @@
 
       .then(text => {
 
-        const queue =
-          document.getElementById("queue");
-
-        const lines =
-          text
-            .split(/\r?\n/)
-            .map(line => line.trim())
-            .filter(line => line !== "");
+        const songs = text
+          .split(/\r?\n/)
+          .map(song => song.trim())
+          .filter(song => song.length > 0);
 
 
         queue.innerHTML = "";
 
-        lines.forEach((line, index) => {
+        count.textContent = songs.length;
 
-          const item =
-            document.createElement("div");
 
-          item.className = "queue-item";
+        if (songs.length === 0) {
 
-          item.innerHTML = `
-            <span class="queue-number">
+          queue.innerHTML = `
+            <div class="empty">
+              La lista está vacía.
+            </div>
+          `;
+
+          return;
+        }
+
+
+        songs.forEach((song, index) => {
+
+          const track = document.createElement("div");
+
+          track.className = "track";
+
+          track.innerHTML = `
+
+            <span class="track-number">
               ${String(index + 1).padStart(2, "0")}
             </span>
 
-            <span class="queue-song">
-              ${line}
+            <span class="track-name">
+              ${song}
             </span>
+
+            <span class="track-play">
+              ♪
+            </span>
+
           `;
 
-          queue.appendChild(item);
+
+          queue.appendChild(track);
 
         });
-
-
-        document.getElementById("count").textContent =
-          lines.length;
-
 
       })
 
@@ -169,8 +198,11 @@
 
         console.error(error);
 
-        document.getElementById("queue").innerHTML =
-          "<p>No se pudo cargar lista1.txt</p>";
+        queue.innerHTML = `
+          <div class="empty">
+            No se pudo cargar <strong>lista1.txt</strong>.
+          </div>
+        `;
 
       });
 
