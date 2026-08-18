@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Lista 1</title>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -12,31 +14,54 @@
   <main class="player-page">
 
     <header class="topbar">
-      <a href="index.html" class="back">← Volver</a>
+
+      <a href="index.html" class="back">
+        ← Volver
+      </a>
 
       <div class="brand">
         <img src="logo.png" alt="Logo">
       </div>
 
-      <span class="top-title">LISTA 1</span>
+      <span class="top-title">
+        LISTA 1
+      </span>
+
     </header>
+
 
     <section class="player-layout">
 
+
+      <!-- REPRODUCTOR -->
+
       <div class="player-panel">
 
-        <div class="now-label">REPRODUCIENDO</div>
+        <div class="now-label">
+          REPRODUCIENDO
+        </div>
 
         <div class="cover">
           <img src="logo.png" alt="Lista 1">
         </div>
 
         <div class="now-info">
-          <span>LISTA 1</span>
-          <h1>Lista 1</h1>
+
+          <span id="track-status">
+            LISTA 1
+          </span>
+
+          <h1>
+            Lista 1
+          </h1>
+
+          <p>
+            KQ105 Final #1
+          </p>
+
         </div>
 
-        <!-- WAV -->
+
         <audio
           id="audio"
           controls
@@ -44,34 +69,111 @@
           src="https://analog-metallic-steal-itunes.trycloudflare.com/KQ105%20Final%20%231.wav">
         </audio>
 
-        <!-- CONTENIDO DEL TXT -->
-        <div class="tracklist">
-          <h2>Canciones</h2>
-          <pre id="lista">Cargando lista...</pre>
+      </div>
+
+
+      <!-- CUADRO DE LA LISTA -->
+
+      <aside class="queue-panel">
+
+        <div class="queue-header">
+
+          <div>
+
+            <span class="now-label">
+              LISTA
+            </span>
+
+            <h2>
+              Canciones
+            </h2>
+
+          </div>
+
+          <span id="count">
+            —
+          </span>
+
         </div>
 
-      </div>
+
+        <div id="queue" class="queue">
+          Cargando lista...
+        </div>
+
+      </aside>
+
 
     </section>
 
   </main>
 
+
   <script>
-    fetch("/listas/lista1.txt")
+
+    fetch("lista1.txt")
+
       .then(response => {
+
         if (!response.ok) {
           throw new Error("No se pudo cargar lista1.txt");
         }
 
         return response.text();
+
       })
+
       .then(text => {
-        document.getElementById("lista").textContent = text;
+
+        const queue =
+          document.getElementById("queue");
+
+        const lines =
+          text
+            .split(/\r?\n/)
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        queue.innerHTML = "";
+
+        lines.forEach((line, index) => {
+
+          const item =
+            document.createElement("div");
+
+          item.className = "queue-item";
+
+          item.innerHTML = `
+            <span class="queue-number">
+              ${String(index + 1).padStart(2, "0")}
+            </span>
+
+            <span class="queue-song">
+              ${line}
+            </span>
+          `;
+
+          queue.appendChild(item);
+
+        });
+
+
+        document.getElementById("count").textContent =
+          lines.length;
+
+
       })
-      .catch(() => {
-        document.getElementById("lista").textContent =
-          "No se pudo cargar la lista.";
+
+      .catch(error => {
+
+        console.error(error);
+
+        document.getElementById("queue").innerHTML =
+          "<p>No se pudo cargar lista1.txt</p>";
+
       });
+
   </script>
 
 </body>
