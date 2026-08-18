@@ -57,7 +57,7 @@
   </main>
 
   <script>
-    fetch("lista1.txt")
+    fetch("/listas/lista1.txt")
       .then(response => {
         if (!response.ok) {
           throw new Error("No se pudo cargar lista1.txt");
