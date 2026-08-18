@@ -3,45 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Lista 2</title>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <main class="player-page">
-    <header class="topbar">
-      <a href="index.html" class="back">← Volver</a>
-      <div class="brand"><img src="logo.png" alt="Logo"></div>
-      <span class="top-title">LISTA 2</span>
-    </header>
 
-    <section class="player-layout">
-      <div class="player-panel">
-        <div class="now-label">REPRODUCIENDO</div>
-        <div class="cover"><img src="logo.png" alt=""></div>
-        <div class="now-info">
-          <span id="track-status">LISTA 2</span>
-          <h1 id="now-title">Cargando lista...</h1>
-        </div>
-        <audio id="audio" controls preload="metadata"></audio>
-        <div class="player-actions">
-          <button id="prevBtn" type="button">Anterior</button>
-          <button id="nextBtn" type="button">Siguiente</button>
-        </div>
-        <p class="hint">Los archivos de audio deben estar en <code>musica/lista2/</code> y llamarse 01.mp3, 02.mp3, etc.</p>
+<body>
+
+  <main class="player-page">
+
+    <header class="topbar">
+
+      <a href="index.html" class="back">
+        ← Volver
+      </a>
+
+      <div class="brand">
+        <img src="logo.png" alt="Logo">
       </div>
 
-      <aside class="queue-panel">
-        <div class="queue-header">
-          <div>
-            <span class="now-label">COLA</span>
-            <h2>Canciones</h2>
-          </div>
-          <span id="count">0</span>
+      <span class="top-title">
+        LISTA 1
+      </span>
+
+    </header>
+
+
+    <section class="player-layout">
+
+
+      <!-- REPRODUCTOR -->
+
+      <div class="player-panel">
+
+        <div class="now-label">
+          REPRODUCIENDO
         </div>
-        <div id="queue" class="queue"></div>
+
+
+        <div class="cover">
+
+          <img
+            src="logo.png"
+            alt="Lista 2">
+
+        </div>
+
+
+        <div class="now-info">
+
+          <span>
+            LISTA 1
+          </span>
+
+          <h1>
+            KQ105 Playlist Oficial - 18 de agosto de 2026
+          </h1>
+
+        </div>
+
+
+        <!-- WAV -->
+
+        <audio
+          id="audio"
+          controls
+          preload="metadata"
+          src="https://analog-metallic-steal-itunes.trycloudflare.com/KQ105%20Final%20%232.wav">
+        </audio>
+
+
+        <p class="hint">
+          Reproduce la lista sonada en KQ105 el 18 de agosto de 2026.
+        </p>
+
+      </div>
+
+
+      <!-- LISTA TXT -->
+
+      <aside class="queue-panel">
+
+        <div class="queue-header">
+
+          <div>
+
+            <span class="now-label">
+              LISTA
+            </span>
+
+            <h2>
+              Canciones
+            </h2>
+
+          </div>
+
+          <span id="count">
+            0
+          </span>
+
+        </div>
+
+
+        <div id="queue" class="queue">
+
+          <div class="empty">
+            Cargando lista...
+          </div>
+
+        </div>
+
       </aside>
+
+
     </section>
+
   </main>
-  <script src="js/player.js" data-list="lista2"></script>
+
+
+  <script>
+
+    const queue = document.getElementById("queue");
+    const count = document.getElementById("count");
+
+
+    fetch("/listas/lista2.txt")
+
+      .then(response => {
+
+        if (!response.ok) {
+          throw new Error("No se pudo cargar lista1.txt");
+        }
+
+        return response.text();
+
+      })
+
+      .then(text => {
+
+        const songs = text
+          .split(/\r?\n/)
+          .map(song => song.trim())
+          .filter(song => song.length > 0);
+
+
+        queue.innerHTML = "";
+
+        count.textContent = songs.length;
+
+
+        if (songs.length === 0) {
+
+          queue.innerHTML = `
+            <div class="empty">
+              La lista está vacía.
+            </div>
+          `;
+
+          return;
+        }
+
+
+        songs.forEach((song, index) => {
+
+          const track = document.createElement("div");
+
+          track.className = "track";
+
+          track.innerHTML = `
+
+            <span class="track-number">
+              ${String(index + 1).padStart(2, "0")}
+            </span>
+
+            <span class="track-name">
+              ${song}
+            </span>
+
+            <span class="track-play">
+              ♪
+            </span>
+
+          `;
+
+
+          queue.appendChild(track);
+
+        });
+
+      })
+
+      .catch(error => {
+
+        console.error(error);
+
+        queue.innerHTML = `
+          <div class="empty">
+            No se pudo cargar <strong>lista1.txt</strong>.
+          </div>
+        `;
+
+      });
+
+  </script>
+
 </body>
 </html>
