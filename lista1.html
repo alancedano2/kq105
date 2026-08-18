@@ -17,7 +17,7 @@
       <a href="index.html" class="back">← Volver</a>
 
       <div class="brand">
-        <img src="logo.png" alt="Logo">
+        <img src="logo.png" alt="KQ105">
       </div>
 
       <span class="top-title">LISTA 1</span>
@@ -26,9 +26,12 @@
 
     <section class="player-layout">
 
+      <!-- REPRODUCTOR -->
       <div class="player-panel">
 
-        <div class="now-label">REPRODUCIENDO</div>
+        <div class="now-label">
+          REPRODUCIENDO
+        </div>
 
         <div class="cover">
           <img src="logo.png" alt="Lista 1">
@@ -42,18 +45,313 @@
           <p>KQ105 Final #1</p>
         </div>
 
+
+        <!-- REPRODUCTOR PERSONALIZADO -->
+
         <audio
           id="audio"
-          controls
           preload="metadata"
           src="https://analog-metallic-steal-itunes.trycloudflare.com/KQ105%20Final%20%231.wav">
         </audio>
 
+        <div class="custom-player">
+
+          <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+
+          <div class="time-row">
+            <span id="currentTime">0:00</span>
+            <span id="duration">0:00</span>
+          </div>
+
+          <div class="controls">
+
+            <button id="rewindBtn" class="control-btn" type="button">
+              ↶
+            </button>
+
+            <button id="playBtn" class="play-btn" type="button">
+              ▶
+            </button>
+
+            <button id="forwardBtn" class="control-btn" type="button">
+              ↷
+            </button>
+
+            <button id="muteBtn" class="control-btn" type="button">
+              🔊
+            </button>
+
+          </div>
+
+          <div class="volume-container">
+            <span>🔈</span>
+
+            <input
+              id="volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value="1">
+          </div>
+
+        </div>
+
       </div>
+
+
+      <!-- LISTA TXT -->
+      <aside class="queue-panel">
+
+        <div class="queue-header">
+
+          <div>
+            <span class="now-label">LISTA</span>
+            <h2>Lista 1</h2>
+          </div>
+
+        </div>
+
+        <div id="playlist" class="playlist">
+          <div class="loading">
+            Cargando lista...
+          </div>
+        </div>
+
+      </aside>
 
     </section>
 
   </main>
+
+
+  <script>
+
+    const audio = document.getElementById("audio");
+
+    const playBtn = document.getElementById("playBtn");
+    const rewindBtn = document.getElementById("rewindBtn");
+    const forwardBtn = document.getElementById("forwardBtn");
+    const muteBtn = document.getElementById("muteBtn");
+
+    const progressContainer =
+      document.getElementById("progressContainer");
+
+    const progressBar =
+      document.getElementById("progressBar");
+
+    const currentTime =
+      document.getElementById("currentTime");
+
+    const duration =
+      document.getElementById("duration");
+
+    const volume =
+      document.getElementById("volume");
+
+    const playlist =
+      document.getElementById("playlist");
+
+
+    // PLAY / PAUSE
+
+    playBtn.addEventListener("click", () => {
+
+      if (audio.paused) {
+
+        audio.play();
+
+      } else {
+
+        audio.pause();
+
+      }
+
+    });
+
+
+    audio.addEventListener("play", () => {
+
+      playBtn.textContent = "❚❚";
+
+    });
+
+
+    audio.addEventListener("pause", () => {
+
+      playBtn.textContent = "▶";
+
+    });
+
+
+    // TIEMPO
+
+    function formatTime(seconds) {
+
+      if (!seconds || isNaN(seconds)) {
+        return "0:00";
+      }
+
+      const minutes = Math.floor(seconds / 60);
+
+      const secs = Math.floor(seconds % 60)
+        .toString()
+        .padStart(2, "0");
+
+      return `${minutes}:${secs}`;
+
+    }
+
+
+    audio.addEventListener("loadedmetadata", () => {
+
+      duration.textContent =
+        formatTime(audio.duration);
+
+    });
+
+
+    audio.addEventListener("timeupdate", () => {
+
+      const percentage =
+        (audio.currentTime / audio.duration) * 100;
+
+      progressBar.style.width =
+        `${percentage || 0}%`;
+
+      currentTime.textContent =
+        formatTime(audio.currentTime);
+
+    });
+
+
+    // CLICK EN LA BARRA
+
+    progressContainer.addEventListener("click", (e) => {
+
+      const rect =
+        progressContainer.getBoundingClientRect();
+
+      const percentage =
+        (e.clientX - rect.left) / rect.width;
+
+      audio.currentTime =
+        percentage * audio.duration;
+
+    });
+
+
+    // 10 SEGUNDOS ATRÁS
+
+    rewindBtn.addEventListener("click", () => {
+
+      audio.currentTime =
+        Math.max(0, audio.currentTime - 10);
+
+    });
+
+
+    // 10 SEGUNDOS ADELANTE
+
+    forwardBtn.addEventListener("click", () => {
+
+      audio.currentTime =
+        Math.min(
+          audio.duration,
+          audio.currentTime + 10
+        );
+
+    });
+
+
+    // VOLUMEN
+
+    volume.addEventListener("input", () => {
+
+      audio.volume = volume.value;
+
+    });
+
+
+    // MUTE
+
+    muteBtn.addEventListener("click", () => {
+
+      audio.muted = !audio.muted;
+
+      muteBtn.textContent =
+        audio.muted ? "🔇" : "🔊";
+
+    });
+
+
+    // CARGAR lista1.txt
+
+    fetch("lista1.txt")
+      .then(response => {
+
+        if (!response.ok) {
+          throw new Error("No se pudo cargar lista1.txt");
+        }
+
+        return response.text();
+
+      })
+      .then(text => {
+
+        playlist.innerHTML = "";
+
+        const lines =
+          text.split(/\r?\n/)
+            .map(line => line.trim())
+            .filter(line => line.length > 0);
+
+
+        lines.forEach((line, index) => {
+
+          const item =
+            document.createElement("div");
+
+          item.className = "playlist-item";
+
+          item.innerHTML = `
+            <span class="number">
+              ${(index + 1).toString().padStart(2, "0")}
+            </span>
+
+            <span class="song">
+              ${line}
+            </span>
+          `;
+
+          playlist.appendChild(item);
+
+        });
+
+
+        if (lines.length === 0) {
+
+          playlist.innerHTML =
+            '<div class="loading">La lista está vacía.</div>';
+
+        }
+
+      })
+      .catch(error => {
+
+        console.error(error);
+
+        playlist.innerHTML = `
+          <div class="loading">
+            No se pudo cargar lista1.txt
+          </div>
+        `;
+
+      });
+
+  </script>
 
 </body>
 </html>
